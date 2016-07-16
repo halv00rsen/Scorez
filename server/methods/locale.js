@@ -1,0 +1,4 @@
+
+IsLoggedIn = function(user) {
+	
+}

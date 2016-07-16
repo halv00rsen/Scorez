@@ -1,0 +1,18 @@
+<template name="login">
+	<div class="container">
+		<h2>Welcome to Scorez</h2>
+		{{> message_box}}
+		<p>Please login to use Scorez</p>
+		<form>
+			<fieldset class="form-group">
+				<label for="username">Username:</label>
+				<input type="text" class="form-control" name="username" placeholder="Enter username" />
+			</fieldset>
+			<fieldset class="form-group">
+				<label for="password">Password:</label>
+				<input type="password" class="form-control" name="password" placeholder="Enter password" />
+			</fieldset>
+			<input type="submit" name="submit" class="btn btn-default" value="Login">
+		</form>
+	</div>
+</template>

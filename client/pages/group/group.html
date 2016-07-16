@@ -1,0 +1,17 @@
+<template name="group">
+	<h3>{{name}}</h3>
+	<h4>{{owner}}</h4>
+
+	<h4>Elements</h4>
+	<a href="{{pathFor 'new_element' username=owner group=name}}">New element</a>
+	<a href="{{pathFor 'new_type' username=owner group=name}}">New type</a>
+	<table class="table table-striped table-hover">
+		<tbody>
+			{{#each beers}}
+				<tr class="clickable">
+					<td>{{name}}</td>
+				</tr>
+			{{/each}}
+		</tbody>
+	</table>
+</template>
