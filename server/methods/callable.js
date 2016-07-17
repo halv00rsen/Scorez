@@ -201,8 +201,6 @@ Meteor.methods({
 
 	add_point_to_element: function(data) {
 
-		console.log(data);
-		
 		if (!Meteor.user()) 
 			throw new Meteor.Error(530, "You are not logged in.");
 
@@ -210,7 +208,8 @@ Meteor.methods({
 			point: Number,
 			element: String,
 			type: String,
-			group_id: String
+			group_id: String,
+			element_id: String
 		});
 
 		if (data.point % 1 !== 0 || data.point < 0 || data.point > 100)
@@ -246,25 +245,47 @@ Meteor.methods({
 		score += data.point;
 
 		score = score / (points.length + 1);
+		// console.log(data.element + "  " + data.type);
+		// console.log(score);
+
+		// var hei = Groups.find({
+		// 	_id: data.group_id,
+		// 	"beers.name": data.element,
+		// 	"beers.type": data.type 
+		// }).fetch();
+
+		// for (var i in hei) {
+		// 	console.log(hei[i].name);
+		// }
+
+		// 	"beers.name": data.element,
+		// 	"beers.type": data.type
 
 		Groups.update({
-			_id: data.group_id,
-			"beers.name": data.element,
-			"beers.type": data.type
+			_id: data.group_id
 		}, {
 			$push: {
 				logs: {
 					text: "The element " + data.element + " with type " + data.type + ", got " + data.point + " points.",
 					date: new Date(),
 					username: Meteor.user().username
-				},
+				}
+			}
+		});
+
+		Groups.update({
+			_id: data.group_id,
+			"beers._id": data.element_id
+			// "beers.type": data.type
+		}, {
+			$push: {
 				"beers.$.points": {
 					point: data.point,
 					username: Meteor.user().username
 				}
 			},
 			$set: {
-				"beers.$.score": score
+				"beers.$.score": score.toFixed(2)
 			}
 		});
 
@@ -311,7 +332,8 @@ Meteor.methods({
 					name: data.name,
 					type: type,
 					points: [],
-					score: 0
+					score: "0",
+					_id: Random.id()
 				},
 				logs: {
 					text: "The element " + data.name + " with type " + type + " was added.",

@@ -25,7 +25,8 @@ Template.element.events({
 			point: point,
 			element: current_element.name,
 			type: current_element.type,
-			group_id: current_group._id
+			group_id: current_group._id,
+			element_id: current_element._id
 		}, function(error, result) {
 			if (error) 
 				Show_message(error.reason);

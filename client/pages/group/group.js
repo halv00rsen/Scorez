@@ -28,10 +28,18 @@ Template.group.helpers({
 	},
 
 	get_logs: function(logs) {
-		// logs.reverse();
+		logs.reverse();
 		return logs.slice(0,10);
+	},
+	formatDate: function(date) {
+	    return moment(date).calendar(null, {
+			sameDay: '[Today at] HH:mm',
+			lastDay: '[Yesterday at] HH:mm',
+			lastWeek: '[Last] dddd [at] HH:mm',
+			thisWeek: 'dddd [at] HH:mm',
+			sameElse: 'dddd DD/MM/YY [at] HH:mm'
+		});
 	}
-
 });
 
 

@@ -3,8 +3,7 @@
 	<h4>{{owner}}</h4>
 
 	<h4>Elements</h4>
-	<a href="{{pathFor 'new_element' username=owner group=name}}">New element</a>
-	<a href="{{pathFor 'new_type' username=owner group=name}}">New type</a>
+	
 	{{#if is_owner owner}}
 	<div>
 		<form id="invite">
@@ -29,19 +28,18 @@
 					</div>		
 					<div class="panel-body side-content">
 						<table class="table">
-							<thead>
+							<!-- <thead>
 								<tr>
 									<th>Text</th>
-									<th>Username</th>
 									<th>When</th>
 								</tr>
-							</thead>
+							</thead> -->
 							<tbody>
-								{{#each logs}}
+								{{#each get_logs logs}}
 									<tr>
-										<td>{{text}}</td>
-										<td>{{username}}</td>
-										<td>{{date}}</td>
+										<td>
+											{{text}} {{formatDate date}} by {{username}}.
+										</td>
 									</tr>
 								{{/each}}
 							</tbody>
@@ -63,6 +61,7 @@
 				<div class="panel panel-default">
 					<div class="panel-heading">
 						Types
+						<a class="pull-right" href="{{pathFor 'new_type' username=owner group=name}}">New type</a>
 					</div>
 					<div class="panel-body side-content">
 						<table class="table">
@@ -83,6 +82,7 @@
 				<div class="panel panel-default">
 					<div class="panel-heading">
 						Members
+						<a class="pull-right" href="">Add member</a>
 					</div>
 					<div class="panel-body side-content">
 						<table class="table">

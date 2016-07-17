@@ -121,6 +121,11 @@ Schemas.Type = new SimpleSchema({
 });
 
 Schemas.Beer = new SimpleSchema({
+	_id: {
+		type: String,
+		optional: false,
+		regEx: SimpleSchema.RegEx.Id
+	},
 	name: {
 		type: String,
 		max: 40,
@@ -137,7 +142,7 @@ Schemas.Beer = new SimpleSchema({
 		optional: false
 	},
 	score: {
-		type: Number,
+		type: String,
 		optional: false
 	}
 });
