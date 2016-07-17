@@ -13,6 +13,7 @@ Template.new_type.events({
 			} else {
 				Show_message("The type was saved.");
 			}
+			event.target.type_name.value = "";
 		});
 	}
 });

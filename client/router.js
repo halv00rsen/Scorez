@@ -56,6 +56,7 @@ Router.route("/group/:username/:group", function() {
 		this.render("page_not_found");
 	} 
 	else {
+		Session.set("selected_group", group);
 		this.render("group", {data: group});
 	}
 }, {
@@ -100,6 +101,23 @@ Router.route("/new_type/:username/:group", function() {
 }, {
 	name: "new_type",
 	template: "new_type"
+});
+
+
+Router.route("/admin", {
+	name: "admin",
+	template: "admin",
+	onBeforeAction: function() {
+		if (Roles.userIsInRole(Meteor.user(), ["admin"]))
+	      this.next();
+	    else
+	      this.render("page_not_found");
+	}
+});
+
+Router.route("/messages", {
+	name: "messages",
+	template: "messages"
 });
 
 // Router.route("/", function() {

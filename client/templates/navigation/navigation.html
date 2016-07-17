@@ -4,8 +4,26 @@
 			<div class="navbar-header">
 				<a class="navbar-brand" href="{{pathFor 'home'}}">Scorez</a>
 			</div>
+			<ul class="nav navbar-nav">
+				{{#if currentUser}}
+				<li>
+					<a href="{{pathFor 'home'}}">Home</a>
+				</li>
+				{{/if}}
+			</ul>
 			<ul class="nav navbar-nav navbar-right">
 				{{#if currentUser}}
+					<li>
+						<p class="navbar-text ">Logged in as <a href="" class="navbar-link">{{currentUser.username}}</a></p>
+					</li>
+					{{#if isInRole 'admin'}}
+						<li>
+							<a href="{{pathFor 'admin'}}">Admin</a>
+						</li>
+					{{/if}}
+					<li>
+						<a href="{{pathFor 'messages'}}">Messages <span class="badge">{{get_unread_messages}}</span></a>
+					</li>
 					<li>
 						<a id="logout">Log out</a>
 					</li>

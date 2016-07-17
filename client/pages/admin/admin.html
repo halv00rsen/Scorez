@@ -1,0 +1,15 @@
+<template name="admin">
+	<h3>Admin page</h3>
+	<br>
+	{{> message_box}}
+	<div class="row">
+		<div class="col-md-3">
+			<p id="new_user" class="admin_menu_button open">Create new user</p>
+			<p id="user_handling" class="admin_menu_button">User handling</p>
+			<!-- <p class="admin_menu_button">Edit groups</p> -->
+		</div>
+		<div class="col-md-9" id="admin_content">
+			{{> Template.dynamic template=get_current_template}}
+		</div>
+	</div>
+</template>

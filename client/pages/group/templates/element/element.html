@@ -1,0 +1,32 @@
+<template name="element">
+	{{#with get_current_element}}
+	<div class="panel-heading">
+		{{name}}
+		<br>
+		{{type}}
+	</div>
+	<form>
+		<input type="text" name="score" autocomplete="off">
+		<input type="submit" name="submit" value="Give points">
+	</form>
+	<div class="panel-body">
+		<a href="" id="back">back</a>
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Point</th>
+					<th>Username</th>
+				</tr>
+			</thead>
+			<tbody>
+				{{#each points}}
+					<tr>
+						<td>{{point}}</td>
+						<td>{{username}}</td>
+					</tr>
+				{{/each}}
+			</tbody>
+		</table>
+	</div>
+	{{/with}}
+</template>

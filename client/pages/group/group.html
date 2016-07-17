@@ -5,13 +5,100 @@
 	<h4>Elements</h4>
 	<a href="{{pathFor 'new_element' username=owner group=name}}">New element</a>
 	<a href="{{pathFor 'new_type' username=owner group=name}}">New type</a>
-	<table class="table table-striped table-hover">
-		<tbody>
-			{{#each beers}}
-				<tr class="clickable">
-					<td>{{name}}</td>
-				</tr>
-			{{/each}}
-		</tbody>
-	</table>
+	{{#if is_owner owner}}
+	<div>
+		<form id="invite">
+			<label>Invite user to group</label>
+			<input type="text" name="username">
+			<input type="text" name="group_id" value="{{_id}}" hidden>
+			<input type="submit" name="submit" value="Invite">
+		</form>
+	</div>
+	{{/if}}
+	<div class="row">
+		<div class="col-md-8">
+			<div class="panel panel-default">
+				{{> Template.dynamic template=get_current_template}}
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="row">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						Logs
+					</div>		
+					<div class="panel-body side-content">
+						<table class="table">
+							<thead>
+								<tr>
+									<th>Text</th>
+									<th>Username</th>
+									<th>When</th>
+								</tr>
+							</thead>
+							<tbody>
+								{{#each logs}}
+									<tr>
+										<td>{{text}}</td>
+										<td>{{username}}</td>
+										<td>{{date}}</td>
+									</tr>
+								{{/each}}
+							</tbody>
+						</table>
+					</div>			
+				</div>
+			</div>
+			<div class="row">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						Statistics
+					</div>		
+					<div class="panel-body side-content">
+						
+					</div>			
+				</div>
+			</div>
+			<div class="row">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						Types
+					</div>
+					<div class="panel-body side-content">
+						<table class="table">
+							<tbody>
+								{{#each types}}
+									<tr>
+										<td>
+											{{name}}
+										</td>
+									</tr>
+								{{/each}}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						Members
+					</div>
+					<div class="panel-body side-content">
+						<table class="table">
+							<tbody>
+								{{#each members}}
+									<tr>
+										<td>
+											{{this}}
+										</td>
+									</tr>
+								{{/each}}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </template>

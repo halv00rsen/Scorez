@@ -1,0 +1,25 @@
+
+.admin_menu_button {
+	cursor: pointer;
+	border: 1px solid #3399ff;
+	background-color: #99ccff; 
+	/*color: ;*/
+	padding: 10px;
+	font-size: medium;
+}
+
+.admin_menu_button:hover {
+	background-color: #cce6ff;
+}
+
+#admin_content {
+	border: 1px solid #3399ff;
+}
+
+.open {
+	background-color: #0077e6;
+}
+
+.open:hover {
+	background-color: #0077e6;	
+}

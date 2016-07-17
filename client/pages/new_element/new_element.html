@@ -1,14 +1,17 @@
 <template name="new_element">
 	<h3>Create new element for the group {{name}}</h3>
+	<br>
+	<a href="{{pathFor 'group' username=owner group=name}}">Back</a>
 	<form>
 		<table class="table">
+			<input type="text" name="group_id" value="{{_id}}" hidden>
 			<tr>
 				<td><label>Name:</label></td>
-				<td><input type="text" name="element_name"></td>
+				<td><input type="text" name="element_name" autocomplete="off"></td>
 			</tr>
 			<tr>
 				<td><label>Type:</label></td>
-				<td><input type="text" name="element_type"></td>
+				<td><input type="text" name="element_type" autocomplete="off"></td>
 			</tr>
 			<tr>
 				<td></td>

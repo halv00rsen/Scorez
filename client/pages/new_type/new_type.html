@@ -1,13 +1,13 @@
 <template name="new_type">
 	{{name}}
 	{{owner}}
-	{{> message_box}}
+	<a href="{{pathFor 'group' username=owner group=name}}">Back</a>
 	<form>
 		<table class="table">
 			<tbody>
 				<tr>
 					<td><label>Name:</label></td>
-					<td><input type="text" name="type_name"></td>
+					<td><input type="text" name="type_name" autocomplete="off"></td>
 					<input type="text" name="group_id" value="{{_id}}" hidden>
 				</tr>
 				<tr>

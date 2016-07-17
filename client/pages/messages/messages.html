@@ -1,0 +1,43 @@
+<template name="messages">
+	<h3>Your messages</h3>
+	<br>
+	<div class="row">
+		<div class="col-md-6">
+			<!-- <h4>Invites</h4> -->
+			<div class="panel panel-default">
+				<div class="panel-heading">Invites</div>
+				<div class="panel-body">
+					<table class="table">
+						<tbody>
+						{{#each get_invites}}
+							<tr class="{{get_read_class is_read}} invitation" id="{{_id}}">
+								{{#if is_read}}
+								<td class="invite-circle"><i class="fa fa-circle-o" aria-hidden="true" data-toggle="tooltip" data-placement="right" title="Is answered"></i></td>
+								{{else}}
+								<td class="invite-circle"><i class="fa fa-circle" aria-hidden="true" data-toggle="tooltip" data-placement="right" title="Not answered"></i></td>
+								{{/if}}
+								<td class="invite-text">
+									The user <i>{{owner}}</i> invited you to the group <i>{{group_name}}</i>.
+									{{#if is_read}}
+										{{#if answered_yes}}
+										<i style="color: green;">You accepted the invite.</i>
+										{{else}}
+										<i style="color: red;">You declined the invite.</i>
+										{{/if}}
+									{{else}}
+										Do you wish to attend?
+										<a class="choose_value" name="yes" style="color: green;">Yes</a>. 
+										<a class="choose_value" name="no" style="color: red;">No</a>.
+									{{/if}}
+								</td>
+							</tr>
+						{{/each}}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</template>
+
+

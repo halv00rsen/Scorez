@@ -1,0 +1,33 @@
+
+.not_read {
+
+}
+
+/*.invitation {
+	border: 1px solid black;
+	padding-left: 10px;
+	padding-right: 10px;
+}*/
+
+.choose_value {
+	cursor: pointer;
+}
+
+.invitation {
+	display: flex;
+	/*justify-content: center; */
+	align-items: center;
+}
+
+.invite-circle {
+	border: none !important;
+/*	padding: 10px;
+	border-right: 1px solid black;*/
+	/*display: flex;
+	justify-content: center;  align horizontal 
+	align-items: center;*/
+}
+
+.invite-text {
+	width: 100%;
+}
