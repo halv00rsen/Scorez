@@ -8,8 +8,8 @@
 	<div>
 		<form id="invite">
 			<label>Invite user to group</label>
-			<input type="text" name="username">
-			<input type="text" name="group_id" value="{{_id}}" hidden>
+			<input type="text" name="username" autocomplete="off">
+			<input id="real_group_id" type="text" name="group_id" value="{{_id}}" hidden>
 			<input type="submit" name="submit" value="Invite">
 		</form>
 	</div>
@@ -17,7 +17,13 @@
 	<div class="row">
 		<div class="col-md-8">
 			<div class="panel panel-default">
+				<div class="panel-heading">
+					Elements
+					<a id="new_element_btn" class="pull-right" href="">New element</a>
+				</div>
+				<div class="panel-body">
 				{{> Template.dynamic template=get_current_template}}
+				</div>
 			</div>
 		</div>
 		<div class="col-md-4">
@@ -61,20 +67,10 @@
 				<div class="panel panel-default">
 					<div class="panel-heading">
 						Types
-						<a class="pull-right" href="{{pathFor 'new_type' username=owner group=name}}">New type</a>
+						<a id="new_type" class="pull-right" href="">New type</a>
 					</div>
 					<div class="panel-body side-content">
-						<table class="table">
-							<tbody>
-								{{#each types}}
-									<tr>
-										<td>
-											{{name}}
-										</td>
-									</tr>
-								{{/each}}
-							</tbody>
-						</table>
+						{{> Template.dynamic template=get_current_template_types}}
 					</div>
 				</div>
 			</div>
@@ -87,13 +83,28 @@
 					<div class="panel-body side-content">
 						<table class="table">
 							<tbody>
-								{{#each members}}
+								{{#if is_owner owner}}
+									{{#each members}}
+									<tr>
+										<td>
+											{{this}}
+										</td>
+										<td>
+											<button id="{{this}}" class="btn btn-xs btn-danger remove-user-btn">
+												Remove
+											</button>
+										</td>
+									</tr>
+									{{/each}}
+								{{else}}
+									{{#each members}}
 									<tr>
 										<td>
 											{{this}}
 										</td>
 									</tr>
-								{{/each}}
+									{{/each}}
+								{{/if}}
 							</tbody>
 						</table>
 					</div>

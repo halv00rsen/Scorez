@@ -1,0 +1,29 @@
+<template name="user_admin">
+	<div>
+		<a id="back" href="">Back</a>
+	{{#with get_current_user}}
+		<p id="username">{{username}}</p>
+		<p>Created at {{format_date createdAt}}</p>
+		<p>Roles: {{roles}}</p>
+		{{#if userIsInRole 'admin'}}
+			<button id="remove_admin" class="admin-btn btn btn-danger">
+				Remove admin
+			</button>
+		{{else}}
+			<button id="give_admin" class="admin-btn btn btn-default">
+				Give admin
+			</button>
+		{{/if}}
+
+		{{#if userIsInRole 'disabled'}}
+			<button id="enable" class="disable-btn btn btn-success">
+				Enable user
+			</button>
+		{{else}}
+			<button id="disable" class="disable-btn btn btn-danger">
+				Disable user
+			</button>
+		{{/if}}
+	{{/with}}
+	</div>
+</template>

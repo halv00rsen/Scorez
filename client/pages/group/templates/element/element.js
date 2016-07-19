@@ -1,7 +1,23 @@
 
 Template.element.helpers({
 	get_current_element: function() {
-		return Session.get("current_element_in_group");
+		// return Session.get("current_element_in_group");
+		var current = Session.get("current_element_in_group");
+		var group = Groups.findOne({
+			_id: this._id,
+			// "beers._id": current._id
+		});
+		for (var i in group.beers) {
+			if (group.beers[i]._id === current._id){
+				return group.beers[i];
+			}
+		}
+		return;
+		// console.log(hei);
+		// return Groups.findOne({
+		// 	_id: this._id,
+		// 	"beers.$._id": current._id
+		// });
 	}
 });
 

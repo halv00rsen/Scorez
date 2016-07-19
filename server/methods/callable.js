@@ -291,6 +291,60 @@ Meteor.methods({
 
 	},
 
+	add_role_to_user: function(data) {
+
+		if (!Meteor.user())
+			throw new Meteor.Error(530, "You are not logged in.");
+
+		if (!Roles.userIsInRole(Meteor.user(), ["admin"])) {
+			throw new Meteor.Error(403, "You do not have access to to this.");
+		}
+
+		check(data, {
+			user_id: String,
+			role: String
+		});
+
+		var user = Meteor.users.findOne({_id: data.user_id});
+
+		if (!user)
+			throw new Meteor.Error(404, "The user was not found.");
+
+		Roles.addUsersToRoles(user, [data.role]);		
+		// return "The user " + user.username + " was added to the role " + data.role;
+
+		user.roles.push(data.role);
+		return user;
+	},
+
+	remove_role_from_user: function(data) {
+
+		if (!Meteor.user())
+			throw new Meteor.Error(530, "You are not logged in.");
+
+		if (!Roles.userIsInRole(Meteor.user(), ["admin"])) {
+			throw new Meteor.Error(403, "You do not have access to to this.");
+		}
+
+		check(data, {
+			user_id: String,
+			role: String
+		});
+
+		var user = Meteor.users.findOne({_id: data.user_id});
+
+		if (!user)
+			throw new Meteor.Error(404, "The user was not found.");
+
+		Roles.removeUsersFromRoles(user, [data.role]);
+		var index = user.roles.indexOf(data.role);
+		if (index > -1)
+			user.roles.splice(index, 1);
+		// return "The user " + user.username + " was removed from the role " + data.role;
+		return user;
+
+	},
+
 	create_new_element: function(data) {
 
 		if (!Meteor.user()) 
@@ -343,5 +397,85 @@ Meteor.methods({
 			}
 		});
 		// console.log(id);
+	},
+
+	delete_type_from_group: function(data) {
+
+		if (!Meteor.user())
+			throw new Meteor.Error(530, "You are not logged in.");
+
+		check(data, {
+			group_id: String,
+			type: String
+		});
+
+		var group = Groups.findOne({_id: data.group_id});
+
+		if (!group)
+			throw new Meteor.Error(404, "Group not found.");
+
+		// if (group.members.indexOf(Meteor.user().username) === -1) 
+		// 	throw new Meteor.Error(403, "Access denied.");
+
+		if (group.owner !== Meteor.user().username){
+			throw new Meteor.Error(403, "You are not allowed to do this action.");
+		}
+
+		Groups.update({_id: group._id}, {
+			$pull: {
+				types: {
+					name: data.type
+				}
+			},
+			$push: {
+				logs: {
+					text: "The type " + data.type + " was deleted.",
+					date: new Date(),
+					username: Meteor.user().username
+				}
+			}
+		});
+
+		return "The type " + data.type + " was deleted.";
+	},
+
+	remove_user_from_group: function(data) {
+
+		if (!Meteor.user())
+			throw new Meteor.Error(530, "You are not logged in.");
+
+		check(data, {
+			username: String,
+			group_id: String
+		});		
+
+		var group = Groups.findOne({_id: data.group_id});
+
+		if (!group)
+			throw new Meteor.Error(404, "Group not found.");
+
+		var is_owner = group.owner === Meteor.user().username;
+		var del_self = data.username === Meteor.user().username;
+
+		if (is_owner && del_self) {
+			throw new Meteor.Error(400, "You cannot delete yourself from your own group.");
+		} else if (!is_owner) {
+			throw new Meteor.Error(403, "You are not allowed to do this action.");
+		}
+
+		Groups.update({_id: data.group_id}, {
+			$pull: {
+				members: data.username
+			},
+			$push: {
+				logs: {
+					text: "The user " + data.username + " was removed from the group.",
+					date: new Date(),
+					username: Meteor.user().username
+				}
+			}
+		});
+
+		return "The user " + data.username + " was deleted from the group.";
 	}
 });

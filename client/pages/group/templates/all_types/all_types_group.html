@@ -1,0 +1,27 @@
+<template name="all_types_group">
+	<table class="table">
+		<input id="group_id" type="text" name="group_id" value="{{_id}}" hidden>
+		<tbody>
+			{{#if is_owner}}
+				{{#each types}}
+					<tr>
+						<td>
+							{{name}}
+						</td>
+						<td>
+							<button id="{{name}}" class="btn btn-xs btn-warning delete-btn">Delete</button>
+						</td>
+					</tr>
+				{{/each}}
+			{{else}}
+				{{#each types}}
+					<tr>
+						<td>
+							{{name}}
+						</td>
+					</tr>
+				{{/each}}
+			{{/if}}
+		</tbody>
+	</table>
+</template>

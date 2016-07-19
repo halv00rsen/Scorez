@@ -1,7 +1,7 @@
 <template name="new_element">
 	<h3>Create new element for the group {{name}}</h3>
 	<br>
-	<a href="{{pathFor 'group' username=owner group=name}}">Back</a>
+	<a id="back_new" href="">Back</a>
 	<form>
 		<table class="table">
 			<input type="text" name="group_id" value="{{_id}}" hidden>

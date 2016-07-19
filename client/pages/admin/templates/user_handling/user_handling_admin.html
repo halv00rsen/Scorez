@@ -1,3 +1,21 @@
 <template name="user_handling_admin">
 	<h4>User handling</h4>
+	<table class="table table-striped table-hover">
+		<thead>
+			<tr>
+				<th>Username</th>
+				<th>Created</th>
+				<th>Roles</th>
+			</tr>
+		</thead>
+		<tbody>
+		{{#each get_users}}
+			<tr id="{{username}}" class="user clickable">
+				<td>{{username}}</td>
+				<td>{{format_date createdAt}}</td>
+				<td>{{roles}}</td>
+			</tr>
+		{{/each}}
+		</tbody>
+	</table>
 </template>

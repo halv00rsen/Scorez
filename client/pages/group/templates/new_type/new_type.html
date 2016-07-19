@@ -1,0 +1,20 @@
+<template name="new_type">
+	<form>
+		<table class="table">
+			<tbody>
+				<tr>
+					<td><label>Name:</label></td>
+					<td><input  id="type_name" type="text" name="type_name" autocomplete="off"></td>
+					<input id="group_id" type="text" name="group_id" value="{{_id}}" hidden>
+				</tr>
+				<tr>
+					<td></td>
+					<td>
+						<input id="submit" type="submit" name="submit" value="Create">
+						<input id="cancel" type="submit" name="cancel" value="Cancel">
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</form>
+</template>

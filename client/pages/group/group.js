@@ -1,6 +1,7 @@
 
 Template.group.rendered = function() {
 	Session.set("current_template_group", "all_elements");
+	Session.set("current_template_group_types", "all_types_group");
 }
 
 
@@ -10,12 +11,24 @@ Template.group.helpers({
 		return [];
 	},
 
+	get_current_template_types: function() {
+		return Session.get("current_template_group_types");
+	},
+
+	get_group_id: function() {
+		return {
+			group_id: this._id
+		}
+	},
+
 	get_elements_sorted: function(elements) {
 
 	},
 
 	is_owner: function(owner) {
-		return owner == Meteor.user().username;
+		if (Meteor.user())
+			return owner == Meteor.user().username;
+		return false;
 	},
 
 	get_current_template: function() {
@@ -70,6 +83,27 @@ Template.group.events({
 			}
 			event.target.username.value = "";
 		});
+	},
 
+	"click #new_type": function(event, template) {
+		Session.set("current_template_group_types", "new_type");
+	},
+
+	"click .remove-user-btn": function(event, template) {
+
+		Meteor.call("remove_user_from_group", {
+			username: event.target.id,
+			group_id: template.$("#real_group_id").val()
+		}, function(error, result) {
+			if (error) 
+				Show_message(error.reason);
+			else {
+				Show_message(result);
+			}
+		});
+	},
+
+	"click #new_element_btn": function(event, template) {
+		Session.set("current_template_group", "new_element");
 	}
 });	

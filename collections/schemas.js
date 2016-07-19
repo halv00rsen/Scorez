@@ -34,6 +34,18 @@ Schemas.User = new SimpleSchema({
 	}
 });
 
+Schemas.Messages = new SimpleSchema({
+	text: {
+		type: String,
+		optional: false,
+		max: 140
+	},
+	createdAt: {
+		type: Date,
+		optional: false
+	}
+});
+
 Schemas.User_message = new SimpleSchema({
 	group_id: {
 		type: String,

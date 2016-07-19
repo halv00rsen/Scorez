@@ -35,10 +35,15 @@ Template.new_element.events({
 				Show_message(error.reason);
 			else{
 				Show_message("The element " + name + " was added.");
-				event.target.element_name.value = "";
-				event.target.element_type.value = "";
+				// event.target.element_name.value = "";
+				// event.target.element_type.value = "";
+				Session.set("current_template_group", "all_elements");
 			} 
 
 		});
+	},
+
+	"click #back_new": function(event, template) {
+		Session.set("current_template_group", "all_elements");
 	}
 });

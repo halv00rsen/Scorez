@@ -1,4 +1,5 @@
 .meteor/local
 .meteor/meteorite
+.meteor/dev_bundle
 
 settings.json

@@ -1,4 +1,56 @@
 
+Template.all_elements.rendered = function() {
+	Session.set("sort_elements", {
+		sort: "score",
+		asc: true
+	});
+}
+
+Template.all_elements.helpers({
+	get_beers_sorted: function(beers) {
+		// console.log("Sort!");
+		beers.sort(function(a, b) {
+			var data = Session.get("sort_elements");
+			if (!data.asc) {
+				var sb = b;
+				b = a;
+				a = sb;
+			}
+			if (data.sort === "score") {
+				if (b.score === a.score) {
+					if (b.name > a.name)
+						return -1;
+					return 1;
+				}
+				return b.score - a.score;
+			} else if (data.sort === "name") {
+				if (b.name > a.name) {
+					return -1;
+				} else if (b.name < a.name) {
+					return 1;
+				} 
+				return b.score - a.score;
+			} else if (data.sort === "type") {
+				if (b.type > a.type) {
+					return -1;
+				}
+				return 1;
+			}
+		});
+		return beers;
+	},
+
+	have_answered: function(data) {
+		var username = Meteor.user().username;
+		for (var i in data.points) {
+			if (data.points[i].username === username)
+				return true;
+		}
+		return false;
+	}
+});
+
+
 Template.all_elements.events({
 	"click .clickable": function(event, template) {
 		var name = event.target.parentElement.getAttribute("name").split(":");
@@ -17,5 +69,25 @@ Template.all_elements.events({
 			}
 		}
 		Show_message("Something wrong has happened.");
+	},
+
+	"click .title-sort": function(event, template) {
+		var sort = event.target.id;
+		// console.log(event.target.parentElement.id);
+		// console.log(event.target.id);
+		var data = Session.get("sort_elements");
+		template.$(".sort-icons").addClass("disabled");
+		if (data.sort === sort) {
+			data.asc = !data.asc;
+			Session.set("sort_elements", data);
+		} else {
+			data.asc = true;
+			Session.set("sort_elements", {
+				sort: sort,
+				asc: true
+			});
+		}
+		template.$("#" + sort + (data.asc ? "-asc": "-desc")).removeClass("disabled");
 	}
+
 });

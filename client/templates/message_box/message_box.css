@@ -1,0 +1,10 @@
+
+#message_box {
+	position: absolute;
+	right: 5em;
+	max-width: 400px;
+}
+
+.exit_message_button {
+	float: right;
+}

@@ -63,50 +63,56 @@ Router.route("/group/:username/:group", function() {
 	name: "group"
 });
 
-Router.route("/new_element/:username/:group", function() {
-	var username = this.params.username;
-	var group_name = this.params.group;
+// Router.route("/new_element/:username/:group", function() {
+// 	var username = this.params.username;
+// 	var group_name = this.params.group;
 
-	var group = Groups.findOne({
-		owner: username,
-		name: group_name
-	});
+// 	var group = Groups.findOne({
+// 		owner: username,
+// 		name: group_name
+// 	});
 
-	if (!group) {
-		this.render("page_not_found");
-	} else {
-		this.render("new_element", {data: group});
-	}
+// 	if (!group) {
+// 		this.render("page_not_found");
+// 	} else {
+// 		this.render("new_element", {data: group});
+// 	}
 
-}, {
-	name: "new_element",
-	template: "new_element"
-});
+// }, {
+// 	name: "new_element",
+// 	template: "new_element"
+// });
 
-Router.route("/new_type/:username/:group", function() {
-	var username = this.params.username;
-	var group_name = this.params.group;
+// Router.route("/new_type/:username/:group", function() {
+// 	var username = this.params.username;
+// 	var group_name = this.params.group;
 
-	var group = Groups.findOne({
-		owner: username,
-		name: group_name
-	});
+// 	var group = Groups.findOne({
+// 		owner: username,
+// 		name: group_name
+// 	});
 
-	if (!group) {
-		this.render("page_not_found");
-	} else {
-		this.render("new_type", {data: group});
-	}
+// 	if (!group) {
+// 		this.render("page_not_found");
+// 	} else {
+// 		this.render("new_type", {data: group});
+// 	}
 
-}, {
-	name: "new_type",
-	template: "new_type"
-});
+// }, {
+// 	name: "new_type",
+// 	template: "new_type"
+// });
 
 
 Router.route("/admin", {
 	name: "admin",
 	template: "admin",
+	subscriptions: function() {
+		this.subscribe("usernames");
+		// this.subscribe("groups");
+
+		// this.subscribe("groups").wait();
+	},
 	onBeforeAction: function() {
 		if (Roles.userIsInRole(Meteor.user(), ["admin"]))
 	      this.next();
