@@ -9,7 +9,15 @@ Template.element.helpers({
 		});
 		for (var i in group.beers) {
 			if (group.beers[i]._id === current._id){
-				return group.beers[i];
+				var element = group.beers[i];
+				element.have_not_given = true;
+				for (var p in element.points) {
+					if (Meteor.user().username === element.points[p].username) {
+						element.have_not_given = false;
+						break;
+					}
+				}
+				return element;
 			}
 		}
 		return;

@@ -1,14 +1,20 @@
 
 Template.messages.helpers({
 	get_invites: function() {
-		var messages = User_messages.find().fetch();
-		var invites = [];
-		for (var i in messages) {
-			if (messages[i].type === "invite"){
-				invites.push(messages[i]);
-			}
-		}
-		return invites;
+		return User_messages.find({
+			type: "invite"
+		}, {
+			sort: {createdAt: -1}
+		});
+		// console.log("heisanndu");
+		// var messages = User_messages.find().fetch();
+		// var invites = [];
+		// for (var i in messages) {
+		// 	if (messages[i].type === "invite"){
+		// 		invites.push(messages[i]);
+		// 	}
+		// }
+		// return invites;
 	},
 	get_read_class: function(is_read) {
 		if (!is_read)

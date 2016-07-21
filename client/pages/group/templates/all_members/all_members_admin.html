@@ -1,0 +1,29 @@
+<template name="all_members_admin">
+	<input id="group_id_members" type="text" name="group_id" value="{{_id}}" hidden>
+	<table class="table">
+		<tbody>
+			{{#if is_owner owner}}
+				{{#each members}}
+				<tr>
+					<td>
+						{{this}}
+					</td>
+					<td>
+						<button id="{{this}}" class="btn btn-xs btn-danger remove-user-btn">
+							Remove
+						</button>
+					</td>
+				</tr>
+				{{/each}}
+			{{else}}
+				{{#each members}}
+				<tr>
+					<td>
+						{{this}}
+					</td>
+				</tr>
+				{{/each}}
+			{{/if}}
+		</tbody>
+	</table>	
+</template>

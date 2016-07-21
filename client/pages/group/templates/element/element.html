@@ -18,10 +18,12 @@
 			{{/each}}
 		</tbody>
 	</table>
+	{{#if have_not_given}}
 	<form>
 		<input type="text" name="score" autocomplete="off">
 		<input type="submit" name="submit" value="Give points">
 	</form>
+	{{/if}}
 	<!-- <div class="panel-heading">
 		{{name}}
 		<br>

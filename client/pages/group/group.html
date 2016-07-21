@@ -4,16 +4,6 @@
 
 	<h4>Elements</h4>
 	
-	{{#if is_owner owner}}
-	<div>
-		<form id="invite">
-			<label>Invite user to group</label>
-			<input type="text" name="username" autocomplete="off">
-			<input id="real_group_id" type="text" name="group_id" value="{{_id}}" hidden>
-			<input type="submit" name="submit" value="Invite">
-		</form>
-	</div>
-	{{/if}}
 	<div class="row">
 		<div class="col-md-8">
 			<div class="panel panel-default">
@@ -53,7 +43,7 @@
 					</div>			
 				</div>
 			</div>
-			<div class="row">
+			<!-- <div class="row">
 				<div class="panel panel-default">
 					<div class="panel-heading">
 						Statistics
@@ -62,7 +52,7 @@
 						
 					</div>			
 				</div>
-			</div>
+			</div> -->
 			<div class="row">
 				<div class="panel panel-default">
 					<div class="panel-heading">
@@ -78,35 +68,12 @@
 				<div class="panel panel-default">
 					<div class="panel-heading">
 						Members
-						<a class="pull-right" href="">Add member</a>
+						{{#if is_owner owner}}
+						<a id="new_member" class="pull-right" href="">Add member</a>
+						{{/if}}
 					</div>
 					<div class="panel-body side-content">
-						<table class="table">
-							<tbody>
-								{{#if is_owner owner}}
-									{{#each members}}
-									<tr>
-										<td>
-											{{this}}
-										</td>
-										<td>
-											<button id="{{this}}" class="btn btn-xs btn-danger remove-user-btn">
-												Remove
-											</button>
-										</td>
-									</tr>
-									{{/each}}
-								{{else}}
-									{{#each members}}
-									<tr>
-										<td>
-											{{this}}
-										</td>
-									</tr>
-									{{/each}}
-								{{/if}}
-							</tbody>
-						</table>
+						{{> Template.dynamic template=get_current_template_members}}
 					</div>
 				</div>
 			</div>

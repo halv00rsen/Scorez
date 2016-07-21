@@ -11,6 +11,12 @@ Template.all_elements.helpers({
 		// console.log("Sort!");
 		beers.sort(function(a, b) {
 			var data = Session.get("sort_elements");
+			if (!data) {
+				data = {
+					asc: true,
+					sort: "score"
+				}
+			}
 			if (!data.asc) {
 				var sb = b;
 				b = a;
