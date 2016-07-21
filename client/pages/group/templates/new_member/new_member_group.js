@@ -1,4 +1,8 @@
 
+Template.new_member_group.rendered = function() {
+	$("#username").focus();
+}
+
 Template.new_member_group.events({
 	"click #back_member": function(event, template) {
 		Session.set("current_template_group_members", "all_members_admin");

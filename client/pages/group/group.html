@@ -1,9 +1,9 @@
 <template name="group">
 	<h3>{{name}}</h3>
-	<h4>{{owner}}</h4>
+	<!-- <h4>{{owner}}</h4> -->
 
-	<h4>Elements</h4>
-	
+	<br>
+
 	<div class="row">
 		<div class="col-md-8">
 			<div class="panel panel-default">
@@ -17,31 +17,29 @@
 			</div>
 		</div>
 		<div class="col-md-4">
-			<div class="row">
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						Logs
-					</div>		
-					<div class="panel-body side-content">
-						<table class="table">
-							<!-- <thead>
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					Logs
+				</div>		
+				<div class="panel-body side-content">
+					<table class="table">
+						<!-- <thead>
+							<tr>
+								<th>Text</th>
+								<th>When</th>
+							</tr>
+						</thead> -->
+						<tbody>
+							{{#each get_logs logs}}
 								<tr>
-									<th>Text</th>
-									<th>When</th>
+									<td>
+										{{text}} {{formatDate date}} by {{username}}.
+									</td>
 								</tr>
-							</thead> -->
-							<tbody>
-								{{#each get_logs logs}}
-									<tr>
-										<td>
-											{{text}} {{formatDate date}} by {{username}}.
-										</td>
-									</tr>
-								{{/each}}
-							</tbody>
-						</table>
-					</div>			
-				</div>
+							{{/each}}
+						</tbody>
+					</table>
+				</div>			
 			</div>
 			<!-- <div class="row">
 				<div class="panel panel-default">
@@ -53,28 +51,24 @@
 					</div>			
 				</div>
 			</div> -->
-			<div class="row">
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						Types
-						<a id="new_type" class="pull-right" href="">New type</a>
-					</div>
-					<div class="panel-body side-content">
-						{{> Template.dynamic template=get_current_template_types}}
-					</div>
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					Types
+					<a id="new_type" class="pull-right" href="">New type</a>
+				</div>
+				<div class="panel-body side-content">
+					{{> Template.dynamic template=get_current_template_types}}
 				</div>
 			</div>
-			<div class="row">
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						Members
-						{{#if is_owner owner}}
-						<a id="new_member" class="pull-right" href="">Add member</a>
-						{{/if}}
-					</div>
-					<div class="panel-body side-content">
-						{{> Template.dynamic template=get_current_template_members}}
-					</div>
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					Members
+					{{#if is_owner owner}}
+					<a id="new_member" class="pull-right" href="">Add member</a>
+					{{/if}}
+				</div>
+				<div class="panel-body side-content">
+					{{> Template.dynamic template=get_current_template_members}}
 				</div>
 			</div>
 		</div>

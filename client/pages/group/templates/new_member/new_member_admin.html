@@ -1,11 +1,11 @@
 <template name="new_member_group">
 	<div>
 		<form id="invite">
-			<label>Invite user to group</label>
-			<a id="back_member" href="">Back</a>
-			<input type="text" name="username" autocomplete="off">
+			<!-- <label>Invite user to group</label> -->
+			<input id="username" type="text" name="username" autocomplete="off" placeholder="Type username">
 			<input id="real_group_id" type="text" name="group_id" value="{{_id}}" hidden>
 			<input type="submit" name="submit" value="Invite">
+			<input id="back_member" type="button" name="cancel" value="Cancel">
 		</form>
 	</div>
 </template>

@@ -1,4 +1,8 @@
 
+Template.new_element.rendered = function() {
+	$("#elem_name").focus();
+}
+
 Template.new_element.helpers({
 
 });

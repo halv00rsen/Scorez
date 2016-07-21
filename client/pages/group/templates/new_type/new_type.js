@@ -1,4 +1,8 @@
 
+Template.new_type.rendered = function() {
+	$("#type_name").focus();
+}
+
 Template.new_type.events({
 	"click #submit": function(event, template) {
 		event.preventDefault();

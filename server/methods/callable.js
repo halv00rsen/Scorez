@@ -186,7 +186,14 @@ Meteor.methods({
 		if (data.join) {
 			if (group.members.indexOf(Meteor.user().username) === -1) {
 				Groups.update({_id: group._id}, {
-					$push: {members: Meteor.user().username}
+					$push: {
+						members: Meteor.user().username,
+						logs: {
+							text: "The user " + Meteor.user().username + " was added.", 
+							date: new Date(),
+							username: Meteor.user().username
+						}
+					}
 				});
 			}
 		}

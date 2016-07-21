@@ -1,22 +1,26 @@
 <template name="new_element">
-	<h3>Create new element for the group {{name}}</h3>
+	<!-- <h3>Create new element for the group {{name}}</h3> -->
 	<br>
-	<a id="back_new" href="">Back</a>
 	<form>
+		<input type="text" name="group_id" value="{{_id}}" hidden>
 		<table class="table">
-			<input type="text" name="group_id" value="{{_id}}" hidden>
-			<tr>
-				<td><label>Name:</label></td>
-				<td><input type="text" name="element_name" autocomplete="off"></td>
-			</tr>
-			<tr>
-				<td><label>Type:</label></td>
-				<td><input type="text" name="element_type" autocomplete="off"></td>
-			</tr>
-			<tr>
-				<td></td>
-				<td><input type="submit" name="submit" value="Create"></td>
-			</tr>
+			<tbody>
+				<tr>
+					<td><label>Name:</label></td>
+					<td><input id="elem_name" type="text" name="element_name" autocomplete="off" ></td>
+				</tr>
+				<tr>
+					<td><label>Type:</label></td>
+					<td><input type="text" name="element_type" autocomplete="off"></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td>
+						<input type="submit" name="submit" value="Create">
+						<input id="back_new" type="button" name="cancel" value="Cancel">
+					</td>
+				</tr>
+			</tbody>
 		</table>
 	</form>
 </template>

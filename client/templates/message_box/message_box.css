@@ -1,8 +1,9 @@
 
 #message_box {
-	position: absolute;
+	position: fixed;
 	right: 5em;
 	max-width: 400px;
+	z-index: 1000;
 }
 
 .exit_message_button {
