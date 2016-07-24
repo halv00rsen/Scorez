@@ -27,6 +27,7 @@ Meteor.methods({
 		group.members.push(Meteor.user().username);
 		group.types = [];
 		group.logs = [];
+		group.locked = false;
 
 		if (Groups.findOne({
 			name: group.name,
@@ -51,7 +52,10 @@ Meteor.methods({
 			group_id: String
 		});
 
-		var group = Groups.findOne({_id: data.group_id});
+		var group = Groups.findOne({
+			_id: data.group_id,
+			locked: false
+		});
 		if (!group)
 			throw new Meteor.Error(404, "Group not found.");
 
@@ -120,7 +124,10 @@ Meteor.methods({
 			group_id: String
 		});
 
-		var group = Groups.findOne({_id: data.group_id});
+		var group = Groups.findOne({
+			_id: data.group_id,
+			locked: false
+		});
 		if (!group) 
 			throw new Meteor.Error(404, "The group does not exists");
 
@@ -222,7 +229,10 @@ Meteor.methods({
 		if (data.point % 1 !== 0 || data.point < 0 || data.point > 100)
 			throw new Meteor.Error(400, "Wrong format on point.");
 
-		var group = Groups.findOne({_id: data.group_id});
+		var group = Groups.findOne({
+			_id: data.group_id,
+			locked: false
+		});
 
 		if (!group) 
 			throw new Meteor.Error(404, "Group not found.");
@@ -363,7 +373,10 @@ Meteor.methods({
 			group_id: String
 		});
 
-		var group = Groups.findOne({_id: data.group_id});
+		var group = Groups.findOne({
+			_id: data.group_id,
+			locked: false
+		});
 
 		if (!group)
 			throw new Meteor.Error(404, "Group not found.");
@@ -416,7 +429,10 @@ Meteor.methods({
 			type: String
 		});
 
-		var group = Groups.findOne({_id: data.group_id});
+		var group = Groups.findOne({
+			_id: data.group_id,
+			locked: false
+		});
 
 		if (!group)
 			throw new Meteor.Error(404, "Group not found.");
@@ -456,7 +472,10 @@ Meteor.methods({
 			group_id: String
 		});		
 
-		var group = Groups.findOne({_id: data.group_id});
+		var group = Groups.findOne({
+			_id: data.group_id,
+			locked: false
+		});
 
 		if (!group)
 			throw new Meteor.Error(404, "Group not found.");
@@ -484,5 +503,82 @@ Meteor.methods({
 		});
 
 		return "The user " + data.username + " was deleted from the group.";
+	},
+
+	lock_group: function(data) {
+
+		if (!Meteor.user())
+			throw new Meteor.Error(530, "You are not logged in.");
+
+		check(data, {
+			group_id: String
+		});
+
+		var group = Groups.findOne({
+			_id: data.group_id,
+			owner: Meteor.user().username
+		});
+
+		if (!group)
+			throw new Meteor.Error(404, "Group not found.");
+
+		Groups.update({_id: data.group_id}, {
+			$set: {locked: true}
+		});
+		// if (Groups.remove({_id: data.group_id}))
+		// 	return "The group " + group.name + " was deleted.";
+		// else
+		// 	throw new Meteor.Error(400, "The group was not deleted.");
+	},
+
+	unlock_group: function(data) {
+
+		if (!Meteor.user())
+			throw new Meteor.Error(530, "You are not logged in.");
+
+		check(data, {
+			group_id: String
+		});
+
+		var group = Groups.findOne({
+			_id: data.group_id,
+			owner: Meteor.user().username
+		});
+
+		if (!group) 
+			throw new Meteor.Error(404, "Group not found.");
+
+		Groups.update({
+			_id: data.group_id
+		}, {
+			$set: {
+				locked: false
+			}
+		});
+	},
+
+	delete_group: function(data) {
+
+		if (!Meteor.user())
+			throw new Meteor.Error(530, "You are not logged in.");
+
+		check(data, {
+			group_id: String
+		});
+
+		var group = Groups.findOne({
+			_id: data.group_id,
+			owner: Meteor.user().username
+		});
+
+		if (!group) 
+			throw new Meteor.Error(404, "Group not found.");
+
+		if (!group.locked) 
+			throw new Meteor.Error(400, "This group is not locked.");
+
+		if (Groups.remove({_id: data.group_id}))
+			return "The group " + group.name + " was deleted.";
+		throw new Meteor.Error(403, "The group was not deleted.");
 	}
 });

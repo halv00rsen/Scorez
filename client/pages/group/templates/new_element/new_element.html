@@ -11,7 +11,24 @@
 				</tr>
 				<tr>
 					<td><label>Type:</label></td>
-					<td><input type="text" name="element_type" autocomplete="off"></td>
+					<td>
+						<input list="types" name="types">
+						<datalist id="types">
+							{{#each get_types}}
+								<option value="{{name}}">{{name}}</option>
+							{{/each}}
+						</datalist>
+						<!-- <input id="element_type" type="text" name="element_type" autocomplete="off"> -->
+						<!-- <input list="browsers" name="browser">
+						  <datalist id="browsers">
+						    <option value="Internet Explorer"></option>
+						    <option value="Firefox"></option>
+						    <option value="Chrome"></option>
+						    <option value="Opera"></option>
+						    <option value="Safari"></option>
+						  </datalist>
+						  <input type="submit"> -->
+					</td>
 				</tr>
 				<tr>
 					<td></td>

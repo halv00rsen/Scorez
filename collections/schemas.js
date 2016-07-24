@@ -5,7 +5,12 @@ Schemas.User = new SimpleSchema({
 	username: {
 		type: String,
 		optional: false,
-		min: 4
+		min: 4,
+		custom: function() {
+			// if (!Meteor.isServer) {
+			// 	throw new Meteor.Error(403, "You are not allowed to change username.");
+			// }
+		}
 	},
 	roles: {
 		type: [String],
@@ -234,6 +239,9 @@ Schemas.Group = new SimpleSchema({
 	logs: {
 		type: [Schemas.Log],
 		optional: false
+	},
+	locked: {
+		type: Boolean
 	}
 });
 

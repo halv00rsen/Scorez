@@ -73,5 +73,17 @@ Template.group.events({
 
 	"click #new_member": function(event, template) {
 		Session.set("current_template_group_members", "new_member_group");
+	},
+
+	"click #delete-btn": function(event, template) {
+		Meteor.call("lock_group", {
+			group_id: template.$("#group_id_delete").val()
+		}, function(error, result) {
+			if (error){
+				Show_message(error.reason);
+			} else {
+				Router.go("home");
+			}
+		});
 	}
 });	

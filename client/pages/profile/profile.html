@@ -1,0 +1,33 @@
+<template name="profile">
+	<h3>Profile page</h3>
+	{{currentUser.username}}
+	<div class="row">
+		<div class="col-md-8">
+			
+		</div>
+		<div class="col-md-4">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					Change password
+				</div>		
+				<div class="panel-body">
+					<form id="change-password">
+						<fieldset class="form-group">
+							<label for="currentPassword">Current Password</label>
+							<input type="password" class="form-control" name="currentPassword">
+						</fieldset>
+						<fieldset class="form-group">
+							<label for="newPassword">New Password</label>
+							<input type="password" class="form-control" name="newPassword">
+						</fieldset>
+						<fieldset class="form-group">
+							<label for="reNewPassword">Retype password</label>
+							<input type="password" class="form-control" name="reNewPassword">
+						</fieldset>
+						<input type="submit" name="submit" class="btn btn-default" value="Change password">
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</template>

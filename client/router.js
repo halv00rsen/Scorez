@@ -5,6 +5,11 @@ Router.configure({
   // loadingTemplate: 'loading'
 });
 
+Router.route("/profile", {
+	name: "profile",
+	template: "profile"
+});
+
 // Router.onBeforeAction(function() {
 // 	// console.log("OnBefore");
 // 	console.log(Meteor.user());
@@ -32,7 +37,7 @@ Router.route("/", {
 	name: "home",
 	template: "home",
 	subscriptions: function() {
-		// this.subscribe("groups");
+		this.subscribe("deleted_groups");
 
 		// this.subscribe("groups").wait();
 	}
@@ -49,7 +54,8 @@ Router.route("/group/:username/:group", function() {
 
 	var group = Groups.findOne({
 		owner: username,
-		name: group_name
+		name: group_name,
+		locked: false
 	});
 
 	if (!group) {
@@ -108,7 +114,7 @@ Router.route("/admin", {
 	name: "admin",
 	template: "admin",
 	subscriptions: function() {
-		this.subscribe("usernames");
+		this.subscribe("users");
 		// this.subscribe("groups");
 
 		// this.subscribe("groups").wait();

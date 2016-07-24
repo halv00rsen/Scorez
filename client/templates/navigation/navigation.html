@@ -19,7 +19,7 @@
 			<ul class="nav navbar-nav navbar-right">
 				{{#if currentUser}}
 					<li>
-						<p class="navbar-text ">Logged in as <a href="" class="navbar-link">{{currentUser.username}}</a></p>
+						<p class="navbar-text ">Logged in as <a href="{{pathFor 'profile'}}" class="navbar-link">{{currentUser.username}}</a></p>
 					</li>
 					<li>
 						<a href="{{pathFor 'messages'}}">Messages <span class="badge">{{get_unread_messages}}</span></a>

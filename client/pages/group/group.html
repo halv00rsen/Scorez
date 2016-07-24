@@ -1,15 +1,27 @@
 <template name="group">
-	<h3>{{name}}</h3>
+	
 	<!-- <h4>{{owner}}</h4> -->
 
-	<br>
+	<div class="row">
+		<div class="col-md-8">
+			<h3>{{name}} by {{owner}}</h3>		
+		</div>
+		{{#if is_owner owner}}
+		<div class="col-md-4">
+			<input type="text" name="group_id_delete" id="group_id_delete" value="{{_id}}" hidden>
+			<a id="delete-btn" class="btn btn-warning">
+  				<i class="fa fa-lock fa-lg"></i> Lock
+  			</a>
+		</div>
+		{{/if}}
+	</div>
 
 	<div class="row">
 		<div class="col-md-8">
 			<div class="panel panel-default">
 				<div class="panel-heading">
 					Elements
-					<a id="new_element_btn" class="pull-right" href="">New element</a>
+					<a id="new_element_btn" class="pull-right">New element</a>
 				</div>
 				<div class="panel-body">
 				{{> Template.dynamic template=get_current_template}}
@@ -19,7 +31,7 @@
 		<div class="col-md-4">
 			<div class="panel panel-default">
 				<div class="panel-heading">
-					Logs
+					Log
 				</div>		
 				<div class="panel-body side-content">
 					<table class="table">
@@ -54,7 +66,7 @@
 			<div class="panel panel-default">
 				<div class="panel-heading">
 					Types
-					<a id="new_type" class="pull-right" href="">New type</a>
+					<a id="new_type" class="pull-right">New type</a>
 				</div>
 				<div class="panel-body side-content">
 					{{> Template.dynamic template=get_current_template_types}}
@@ -64,7 +76,7 @@
 				<div class="panel-heading">
 					Members
 					{{#if is_owner owner}}
-					<a id="new_member" class="pull-right" href="">Add member</a>
+					<a id="new_member" class="pull-right">Add member</a>
 					{{/if}}
 				</div>
 				<div class="panel-body side-content">

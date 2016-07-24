@@ -4,16 +4,24 @@ Template.new_element.rendered = function() {
 }
 
 Template.new_element.helpers({
-
+	get_types: function() {
+		// console.log(this);
+		return this.types;
+	}
 });
 
 
 Template.new_element.events({
+
+	"input #element_type": function(event, template) {
+		console.log(event.target.value);
+	},
+
 	"submit form": function(event, template) {
 		event.preventDefault();
 
 		var name = event.target.element_name.value;
-		var type = event.target.element_type.value;
+		var type = event.target.types.value;
 
 		var group_id = event.target.group_id.value;
 
