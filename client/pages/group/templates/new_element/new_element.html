@@ -3,7 +3,8 @@
 	<br>
 	<form>
 		<input type="text" name="group_id" value="{{_id}}" hidden>
-		<table class="table">
+		{{#transition in="fadeIn:800" out="fadeOut:500"}}
+		<table class="table animated out">
 			<tbody>
 				<tr>
 					<td><label>Name:</label></td>
@@ -12,7 +13,7 @@
 				<tr>
 					<td><label>Type:</label></td>
 					<td>
-						<input list="types" name="types">
+						<input list="types" name="types" autocomplete="off">
 						<datalist id="types">
 							{{#each get_types}}
 								<option value="{{name}}">{{name}}</option>
@@ -39,5 +40,6 @@
 				</tr>
 			</tbody>
 		</table>
+		{{/transition}}
 	</form>
 </template>

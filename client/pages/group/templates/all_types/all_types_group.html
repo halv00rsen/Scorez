@@ -1,10 +1,12 @@
 <template name="all_types_group">
+	
 	<table class="table">
 		<input id="group_id" type="text" name="group_id" value="{{_id}}" hidden>
 		<tbody>
+			{{#transition in="fadeIn:800" out="fadeOut:500"}}
 			{{#if is_owner}}
 				{{#each types}}
-					<tr>
+					<tr class="animated out">
 						<td>
 							{{name}}
 						</td>
@@ -15,13 +17,14 @@
 				{{/each}}
 			{{else}}
 				{{#each types}}
-					<tr>
+					<tr class="animated out">
 						<td>
 							{{name}}
 						</td>
 					</tr>
 				{{/each}}
 			{{/if}}
+			{{/transition}}
 		</tbody>
 	</table>
 </template>

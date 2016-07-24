@@ -23,7 +23,7 @@
 					Elements
 					<a id="new_element_btn" class="pull-right">New element</a>
 				</div>
-				<div class="panel-body">
+				<div id="main-content-table" class="panel-body">
 				{{> Template.dynamic template=get_current_template}}
 				</div>
 			</div>
@@ -33,7 +33,7 @@
 				<div class="panel-heading">
 					Log
 				</div>		
-				<div class="panel-body side-content">
+				<div id="log-scroll" class="panel-body side-content">
 					<table class="table">
 						<!-- <thead>
 							<tr>
@@ -42,13 +42,15 @@
 							</tr>
 						</thead> -->
 						<tbody>
+							{{#transition in="fadeIn:800" out="fadeOut:500"}}
 							{{#each get_logs logs}}
-								<tr>
+								<tr class="animated out">
 									<td>
 										{{text}} {{formatDate date}} by {{username}}.
 									</td>
 								</tr>
 							{{/each}}
+							{{/transition}}
 						</tbody>
 					</table>
 				</div>			

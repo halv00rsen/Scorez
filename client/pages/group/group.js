@@ -1,8 +1,20 @@
 
+
+
 Template.group.rendered = function() {
 	Session.set("current_template_group", "all_elements");
 	Session.set("current_template_group_types", "all_types_group");
 	Session.set("current_template_group_members", "all_members_admin");
+	// Session.set("logs_show_nums", 4);
+	// $("#log-scroll").on("scroll", function(e) {
+	// 	// console.log(e);
+	// 	console.log("1: " + $("#log-scroll").scrollTop());
+	// 	console.log("2: " + $("#log-scroll").prop('scrollHeight'));
+	// 	if ($("#log-scroll").scrollTop() + 160 > $("#log-scroll").prop('scrollHeight')) {
+	// 		Session.set("logs_show_nums", Session.get("logs_show_nums") + 5);
+	// 		console.log("lolas");
+	// 	}
+	// });
 }
 
 
@@ -47,7 +59,8 @@ Template.group.helpers({
 
 	get_logs: function(logs) {
 		logs.reverse();
-		return logs.slice(0,10);
+		// return logs.slice(0,Session.get("logs_show_nums"));
+		return logs;
 	},
 	formatDate: function(date) {
 	    return moment(date).calendar(null, {

@@ -1,28 +1,31 @@
 <template name="all_elements">
 	<table class="table table-striped table-hover">
 		<thead>
+			{{#transition in="fadeIn:800" out="fadeOut:500"}}
 			<tr>
-				<th id="name" class="title-sort">
+				<th id="name" class="title-sort animated out">
 					Name 
 					<i id="name-asc" class="fa fa-sort-asc disabled sort-icons" aria-hidden="true"></i>
 					<i id="name-desc" class="fa fa-sort-desc disabled sort-icons" aria-hidden="true"></i>
 				</th>
-				<th id="type" class="title-sort">
+				<th id="type" class="title-sort animated out">
 					Type 
 					<i id="type-asc" class="fa fa-sort-asc disabled sort-icons" aria-hidden="true"></i>
 					<i id="type-desc" class="fa fa-sort-desc disabled sort-icons" aria-hidden="true"></i>
 				</th>
-				<th id="score" class="title-sort">
+				<th id="score" class="title-sort animated out">
 					Score 
 					<i id="score-asc" class="fa fa-sort-asc sort-icons" aria-hidden="true"></i>
 					<i id="score-desc" class="fa fa-sort-desc disabled sort-icons" aria-hidden="true"></i>
 				</th>
 				<th></th>
 			</tr>
+			{{/transition}}
 		</thead>
 		<tbody>
+			{{#transition in="fadeIn:800" out="fadeOut:500"}}
 			{{#each get_beers_sorted beers}}
-				<tr class="clickable" name="{{name}}:{{type}}">
+				<tr class="clickable animated out" name="{{name}}:{{type}}">
 					<td>{{name}}</td>
 					<td>{{type}}</td>
 					<td>{{score}}</td>
@@ -38,6 +41,7 @@
 					<!-- <td>{{}}</td> -->
 				</tr>
 			{{/each}}
+			{{/transition}}
 		</tbody>
 	</table>	
 </template>

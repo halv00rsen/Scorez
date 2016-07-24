@@ -33,6 +33,28 @@ Meteor.publish("private_messages", function() {
 	}
 });
 
+
+Meteor.publish("your_group_names", function() {
+	if (this.userId) {
+		var user = Meteor.users.findOne({_id: this.userId});
+		if (user) {
+			return Groups.find({
+				$or: [
+					{owner: user.username},
+					{members: {$in: [user.username]}}
+				],
+				locked: false 
+			}, {
+				fields: {
+					name: 1,
+					owner: 1
+				}
+			});
+		}
+	}
+});
+
+
 Meteor.publish("groups", function() {
 	// console.log("Subscribe groups.");
 	if (this.userId) {
@@ -44,6 +66,11 @@ Meteor.publish("groups", function() {
 					{members: {$in: [user.username]}}
 				],
 				locked: false
+			}, {
+				// fields: {
+				// 	name: 1,
+				// 	owner: 1
+				// }
 			});
 		}
 	}
@@ -56,6 +83,12 @@ Meteor.publish("deleted_groups", function() {
 		var groups = Groups.find({
 			owner: username,
 			locked: true
+		}, {
+			fields: {
+				name: 1,
+				owner: 1,
+				locked: 1
+			}
 		});
 		// console.log("Del groups: " + groups.fetch().length);
 		return groups;

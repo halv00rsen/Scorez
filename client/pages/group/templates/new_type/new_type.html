@@ -1,6 +1,7 @@
 <template name="new_type">
 	<form>
-		<table class="table">
+		{{#transition in="fadeIn:800" out="fadeOut:100"}}
+		<table class="table animated out">
 			<tbody>
 				<tr>
 					<td><label>Name:</label></td>
@@ -16,5 +17,6 @@
 				</tr>
 			</tbody>
 		</table>
+		{{/transition}}
 	</form>
 </template>

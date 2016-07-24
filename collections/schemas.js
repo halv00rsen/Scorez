@@ -115,7 +115,8 @@ Schemas.Point = new SimpleSchema({
 Schemas.Type = new SimpleSchema({
 	name: {
 		type: String,
-		optional: false
+		optional: false,
+		max: 30
 	},
 	createdBy: {
 		type: String,

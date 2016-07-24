@@ -38,10 +38,15 @@ Router.route("/", {
 	template: "home",
 	subscriptions: function() {
 		this.subscribe("deleted_groups");
-
+		this.subscribe("your_group_names");
 		// this.subscribe("groups").wait();
 	}
 });
+
+Router.route("/loading", {
+	name: "loading",
+	template: "loading"
+})
 
 Router.route("/new_group", {
 	name: "new_group",
@@ -66,7 +71,11 @@ Router.route("/group/:username/:group", function() {
 		this.render("group", {data: group});
 	}
 }, {
-	name: "group"
+	name: "group",
+	loadingTemplate: 'loading',
+	waitOn: function() {
+		return Meteor.subscribe("groups");
+	}
 });
 
 // Router.route("/new_element/:username/:group", function() {

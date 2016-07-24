@@ -523,7 +523,14 @@ Meteor.methods({
 			throw new Meteor.Error(404, "Group not found.");
 
 		Groups.update({_id: data.group_id}, {
-			$set: {locked: true}
+			$set: {locked: true},
+			$push: {
+				logs: {
+					text: "The group was locked.",
+					date: new Date(),
+					username: Meteor.user().username
+				}
+			}
 		});
 		// if (Groups.remove({_id: data.group_id}))
 		// 	return "The group " + group.name + " was deleted.";
@@ -553,6 +560,13 @@ Meteor.methods({
 		}, {
 			$set: {
 				locked: false
+			},
+			$push: {
+				logs: {
+					text: "The group was unlocked :)",
+					date: new Date(),
+					username: Meteor.user().username
+				}
 			}
 		});
 	},

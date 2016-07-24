@@ -16,5 +16,10 @@ Template.navigation.events({
 		Meteor.logout(function() {
 			Router.go("login");
 		});
+	},
+
+	"click a": function(event, template) {
+		if (template.$('#main-navbar').hasClass('in'))
+			template.$(".navbar-toggle").click();
 	}
 });

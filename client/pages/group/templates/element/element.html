@@ -1,37 +1,32 @@
 <template name="element">
 	{{#with get_current_element}}
-	<h4>{{name}} - {{type}}</h4>
-	<a id="back">back</a>
-	<table class="table">
-		<thead>
-			<tr>
-				<th>Point</th>
-				<th>Username</th>
-			</tr>
-		</thead>
-		<tbody>
-			{{#each points}}
+	<div>
+		{{#transition in="fadeIn:800" out="fadeOut:500"}}
+		<h4 class="animated out">{{name}} - {{type}}</h4>
+		<a id="back" class="animated out">back</a>
+		<table class="table animated out">
+			<thead>
 				<tr>
-					<td>{{point}}</td>
-					<td>{{username}}</td>
+					<th>Point</th>
+					<th>Username</th>
 				</tr>
-			{{/each}}
-		</tbody>
-	</table>
-	{{#if have_not_given}}
-	<form>
-		<input type="text" name="score" autocomplete="off">
-		<input type="submit" name="submit" value="Give points">
-	</form>
-	{{/if}}
-	<!-- <div class="panel-heading">
-		{{name}}
-		<br>
-		{{type}}
+			</thead>
+			<tbody>
+				{{#each points}}
+					<tr class="animated out">
+						<td>{{point}}</td>
+						<td>{{username}}</td>
+					</tr>
+				{{/each}}
+			</tbody>
+		</table>
+		{{#if have_not_given}}
+		<form>
+			<input type="text" name="score" autocomplete="off">
+			<input type="submit" name="submit" value="Give points">
+		</form>
+		{{/if}}
+		{{/transition}}
 	</div>
-	
-	<div class="panel-body">
-		
-	</div> -->
 	{{/with}}
 </template>
