@@ -20,7 +20,7 @@
 									The user <i>{{owner}}</i> invited you to the group <i>{{group_name}}</i>.
 									{{#if is_read}}
 										{{#if answered_yes}}
-										<i style="color: green;">You accepted the invite.</i>
+										<i style="color: green;">You accepted the invite.</i> <a href="{{pathFor 'group' username=owner group=group_name}}">Go to group page.</a>
 										{{else}}
 										<i style="color: red;">You declined the invite.</i>
 										{{/if}}
