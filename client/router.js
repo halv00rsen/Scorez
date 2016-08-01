@@ -39,7 +39,7 @@ Router.route("/", {
 	subscriptions: function() {
 		this.subscribe("deleted_groups");
 		this.subscribe("your_group_names");
-		// this.subscribe("groups").wait();
+
 	}
 });
 
@@ -54,19 +54,24 @@ Router.route("/new_group", {
 });
 
 Router.route("/group/:username/:group", function() {
+	// console.log(this.ready());
+	if (!this.ready())
+		return;
 	var username = this.params.username;
 	var group_name = this.params.group;
 
 	var group = Groups.findOne({
-		owner: username,
-		name: group_name,
-		locked: false
+		// owner: username,
+		// name: group_name,
+		// locked: false
 	});
-
+	// console.log(group);
+	// Meteor.call("log_text", username + "   " + group_name);
 	if (!group) {
 		this.render("page_not_found");
 	} 
 	else {
+		// console.log(group);
 		Session.set("selected_group", group);
 		this.render("group", {data: group});
 	}
@@ -74,7 +79,18 @@ Router.route("/group/:username/:group", function() {
 	name: "group",
 	loadingTemplate: 'loading',
 	waitOn: function() {
-		return Meteor.subscribe("groups");
+		// console.log("Phone: " + Meteor.Device.isPhone());
+		// Meteor.call("log_text", "Phone: " + Meteor.Device.isPhone());
+		var is_phone = Meteor.Device.isPhone();
+		if (is_phone === undefined) {
+			is_phone = true;
+		} 
+		return Meteor.subscribe("current_group", {
+			is_phone: is_phone,
+			override: false,
+			owner: this.params.username,
+			group_name: this.params.group
+		});
 	}
 });
 

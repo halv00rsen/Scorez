@@ -55,17 +55,61 @@ Meteor.publish("your_group_names", function() {
 });
 
 
-Meteor.publish("groups", function() {
+Meteor.publish("current_group", function(data) {
 	// console.log("Subscribe groups.");
+
+	check(data, {
+		is_phone: Boolean,
+		override: Boolean,
+		owner: String,
+		group_name: String
+	});
+
+	// console.log(data);
+
 	if (this.userId) {
 		var user = Meteor.users.findOne({_id: this.userId});
 		if (user){
+			if (data.is_phone && !data.override) {
+				// console.log("Phone and no override");
+				return Groups.find({
+					owner: data.owner,
+					name: data.group_name,
+					locked: false,
+					$or: [
+						{owner: user.username},
+						{members: {$in: [user.username]}}
+					]
+				}, {
+					fields: {
+						logs: 0
+					}
+				});
+			} else if (data.is_phone && data.override) {
+				// console.log("Phone and override");
+				return Groups.find({
+					owner: data.owner,
+					name: data.group_name,
+					locked: false,
+					$or: [
+						{owner: user.username},
+						{members: {$in: [user.username]}}
+					]
+				}, {
+					fields: {
+						logs: 1
+					}
+				});
+			}
+			// console.log("No phone and no override");
 			return Groups.find({
-				$or: [
-					{owner: user.username},
-					{members: {$in: [user.username]}}
-				],
-				locked: false
+					owner: data.owner,
+					name: data.group_name,
+					locked: false,
+					$or: [
+						{owner: user.username},
+						{members: {$in: [user.username]}}
+					]
 			}, {
 				// fields: {
 				// 	name: 1,

@@ -594,5 +594,10 @@ Meteor.methods({
 		if (Groups.remove({_id: data.group_id}))
 			return "The group " + group.name + " was deleted.";
 		throw new Meteor.Error(403, "The group was not deleted.");
+	},
+
+	log_text: function(text) {
+		// check(text, String);
+		console.log(text);
 	}
 });

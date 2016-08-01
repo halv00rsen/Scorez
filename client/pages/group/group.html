@@ -23,24 +23,26 @@
 					Elements
 					<a id="new_element_btn" class="pull-right">New element</a>
 				</div>
-				<div id="main-content-table" class="panel-body">
+				<div id="main-content-table">
 				{{> Template.dynamic template=get_current_template}}
 				</div>
 			</div>
 		</div>
 		<div class="col-md-4">
 			<div class="panel panel-default">
+				{{#if isPhone}}
+				<div id="panel-log-click" class="panel-heading">
+					Log
+					<span class="pull-right"><i id="log-button" class="fa fa-plus fa-lg" aria-hidden="true"></i></span>
+				</div>
+				{{else}}
 				<div class="panel-heading">
 					Log
-				</div>		
-				<div id="log-scroll" class="panel-body side-content">
+				</div>
+				{{/if}}
+				<div id="log-scroll" class="side-content" style="{{get_mobile_style}}">
+					{{#if logs}}
 					<table class="table">
-						<!-- <thead>
-							<tr>
-								<th>Text</th>
-								<th>When</th>
-							</tr>
-						</thead> -->
 						<tbody>
 							{{#transition in="fadeIn:800" out="fadeOut:500"}}
 							{{#each get_logs logs}}
@@ -53,7 +55,13 @@
 							{{/transition}}
 						</tbody>
 					</table>
-				</div>			
+					{{else}}
+						{{#if isPhone}}
+							<br><br>
+							{{> loading}}
+						{{/if}}
+					{{/if}}	
+				</div>
 			</div>
 			<!-- <div class="row">
 				<div class="panel panel-default">

@@ -8,6 +8,8 @@ Template.all_elements.rendered = function() {
 
 Template.all_elements.helpers({
 	get_beers_sorted: function(beers) {
+		if (!beers)
+			return;
 		// console.log("Sort!");
 		beers.sort(function(a, b) {
 			var data = Session.get("sort_elements");

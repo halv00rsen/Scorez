@@ -1,10 +1,20 @@
 
+var subscribe = undefined;
 
+Template.group.destroyed = function() {
+	// console.log("destroyed");
+	if (subscribe) {
+		subscribe.stop();
+	}
+}
 
-Template.group.rendered = function() {
+Template.group.created = function() {
 	Session.set("current_template_group", "all_elements");
 	Session.set("current_template_group_types", "all_types_group");
 	Session.set("current_template_group_members", "all_members_admin");
+	Session.set("have_subscribed_log_mobile", !Meteor.Device.isPhone());
+	// Meteor.call("log_text", this);
+	// console.log(this);
 	// Session.set("logs_show_nums", 4);
 	// $("#log-scroll").on("scroll", function(e) {
 	// 	// console.log(e);
@@ -70,6 +80,10 @@ Template.group.helpers({
 			thisWeek: 'dddd [at] HH:mm',
 			sameElse: 'dddd DD/MM/YY [at] HH:mm'
 		});
+	},
+
+	get_mobile_style: function() {
+		return Meteor.Device.isPhone() ? "display: none;": "";
 	}
 });
 
@@ -98,5 +112,29 @@ Template.group.events({
 				Router.go("home");
 			}
 		});
+	},
+
+	"click #panel-log-click": function(event, template) {
+		// console.log("heisann");
+		// console.log(event.target.hasClass("fa-plus"));
+		// console.log(event.target);
+		if (!Session.get("have_subscribed_log_mobile")) {
+			Session.set("have_subscribed_log_mobile", true);
+			console.log("heisann")
+			subscribe = Meteor.subscribe("current_group", {
+				is_phone: Meteor.Device.isPhone(),
+				override: true,
+				owner: this.owner,
+				group_name: this.name
+			});
+		}
+		var btn = template.$("#log-button"); 
+		if (btn.hasClass("fa-plus")) {
+			btn.removeClass("fa-plus").addClass("fa-minus");
+			template.$("#log-scroll").show();
+		} else {
+			btn.removeClass("fa-minus").addClass("fa-plus");
+			template.$("#log-scroll").hide();
+		}
 	}
 });	
