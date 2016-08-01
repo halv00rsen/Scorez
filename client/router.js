@@ -67,6 +67,14 @@ Router.route("/group/:username/:group", function() {
 	});
 	// console.log(group);
 	// Meteor.call("log_text", username + "   " + group_name);
+	// console.log("heisann");
+	// var hash = this.params.query;
+	// Session.set("query", hash);
+	// console.log("this is hash.");
+	// console.log(hash);
+	// if (!hash.current_template) {
+		
+	// }
 	if (!group) {
 		this.render("page_not_found");
 	} 
@@ -79,6 +87,7 @@ Router.route("/group/:username/:group", function() {
 	name: "group",
 	loadingTemplate: 'loading',
 	waitOn: function() {
+		console.log("is waiting...");
 		// console.log("Phone: " + Meteor.Device.isPhone());
 		// Meteor.call("log_text", "Phone: " + Meteor.Device.isPhone());
 		var is_phone = Meteor.Device.isPhone();

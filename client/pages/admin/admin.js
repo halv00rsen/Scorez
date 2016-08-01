@@ -1,4 +1,9 @@
 
+Template.admin.destroyed = function() {
+	delete Session.keys["current_admin_template"];
+	delete Session.keys["current_user_admin"];
+}
+
 Template.admin.rendered = function() {
 	Session.set("current_admin_template", "new_user_admin");
 }

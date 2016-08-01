@@ -1,7 +1,11 @@
 
 Template.home.helpers({
 	get_your_groups: function() {
-		return Groups.find();
+		return Groups.find({}, {
+			sort: {
+				name: 1
+			}
+		});
 	},
 	is_owner: function(username) {
 		return username === Meteor.user().username && !this.locked;

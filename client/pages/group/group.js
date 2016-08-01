@@ -6,6 +6,13 @@ Template.group.destroyed = function() {
 	if (subscribe) {
 		subscribe.stop();
 	}
+	delete Session.keys["current_template_group"];
+	delete Session.keys["current_template_group_types"];
+	delete Session.keys["current_template_group_members"];
+	delete Session.keys["have_subscribed_log_mobile"];
+	delete Session.keys["selected_group"];
+	delete Session.keys["sort_elements"];
+	delete Session.keys["current_element_in_group"];
 }
 
 Template.group.created = function() {
@@ -120,7 +127,7 @@ Template.group.events({
 		// console.log(event.target);
 		if (!Session.get("have_subscribed_log_mobile")) {
 			Session.set("have_subscribed_log_mobile", true);
-			console.log("heisann")
+			// console.log("heisann")
 			subscribe = Meteor.subscribe("current_group", {
 				is_phone: Meteor.Device.isPhone(),
 				override: true,

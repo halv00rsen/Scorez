@@ -12,6 +12,10 @@
 			<a id="delete-btn" class="btn btn-warning">
   				<i class="fa fa-lock fa-lg"></i> Lock
   			</a>
+  			<!-- {{#linkTo route="group" username=owner group=name query="window=false" }}
+
+  				hashtag
+  			{{/linkTo}} -->
 		</div>
 		{{/if}}
 	</div>
@@ -23,7 +27,7 @@
 					Elements
 					<a id="new_element_btn" class="pull-right">New element</a>
 				</div>
-				<div id="main-content-table">
+				<div id="main-content-table" class="wrapper">
 				{{> Template.dynamic template=get_current_template}}
 				</div>
 			</div>
