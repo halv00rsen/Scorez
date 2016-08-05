@@ -10,6 +10,10 @@ a {
 	cursor: pointer;
 }
 
+.table {
+	margin: 0;
+}
+
 #main-content-table {
 	max-height: 576px;
 	overflow: auto;

@@ -1,7 +1,8 @@
 
 Router.configure({
   layoutTemplate:"layout",
-  notFoundTemplate:"page_not_found"
+  notFoundTemplate:"page_not_found",
+  loadingTemplate: 'loading'
   // loadingTemplate: 'loading'
 });
 
@@ -36,9 +37,14 @@ Router.route("/login", {
 Router.route("/", {
 	name: "home",
 	template: "home",
+	waitOn: function() {
+		console.log("Waiting on home.");
+		return [
+			this.subscribe("deleted_groups"),
+			this.subscribe("your_group_names")
+		];
+	},
 	subscriptions: function() {
-		this.subscribe("deleted_groups");
-		this.subscribe("your_group_names");
 
 	}
 });

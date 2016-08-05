@@ -1,11 +1,30 @@
 
 Template.home.helpers({
 	get_your_groups: function() {
-		return Groups.find({}, {
+		return Groups.find({
+			locked: {
+				$exists: false
+			},
+			owner: Meteor.user().username
+		}, {
 			sort: {
 				name: 1
 			}
 		});
+	},
+	get_groups_member: function() {
+		return Groups.find({
+			locked: {
+				$exists: false
+			},
+			owner: {
+				$ne: Meteor.user().username
+			}
+		}, {
+			sort: {
+				name: 1
+			}
+		})
 	},
 	is_owner: function(username) {
 		return username === Meteor.user().username && !this.locked;

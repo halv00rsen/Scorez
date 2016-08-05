@@ -242,7 +242,8 @@ Schemas.Group = new SimpleSchema({
 		optional: false
 	},
 	locked: {
-		type: Boolean
+		type: Boolean,
+		optional: false
 	}
 });
 

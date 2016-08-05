@@ -4,12 +4,12 @@ Template.all_elements.rendered = function() {
 		sort: "score",
 		asc: true
 	});
-	$(".sticky-header").floatThead({
-		scrollContainer: function(table) {
-     	   return table.closest('.wrapper');
-    	}
-    	// enableAria: function
-	});
+	// $(".sticky-header").floatThead({
+	// 	scrollContainer: function(table) {
+ //     	   return table.closest('.wrapper');
+ //    	}
+ //    	// enableAria: function
+	// });
 	// $(".sticky-header").floatThead('reflow')
 }
 

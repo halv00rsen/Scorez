@@ -20,6 +20,7 @@ Template.group.created = function() {
 	Session.set("current_template_group_types", "all_types_group");
 	Session.set("current_template_group_members", "all_members_admin");
 	Session.set("have_subscribed_log_mobile", !Meteor.Device.isPhone());
+	
 	// Meteor.call("log_text", this);
 	// console.log(this);
 	// Session.set("logs_show_nums", 4);
