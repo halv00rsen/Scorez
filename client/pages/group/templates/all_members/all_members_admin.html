@@ -24,6 +24,13 @@
 				</tr>
 				{{/each}}
 			{{/if}}
+			{{#each get_invited_users}}
+			<tr>
+				<td colspan="2">
+					<i>{{username}}</i> is invited
+				</td>
+			</tr>
+			{{/each}}
 		</tbody>
 	</table>	
 </template>

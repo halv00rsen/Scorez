@@ -4,6 +4,14 @@ Template.all_members_admin.helpers({
 		if (Meteor.user())
 			return owner == Meteor.user().username;
 		return false;
+	},
+
+	get_invited_users: function() {
+		// console.log(this);
+		return User_messages.find({
+			is_read: false,
+			group_id: this._id
+		});
 	}
 });
 

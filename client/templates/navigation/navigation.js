@@ -1,7 +1,9 @@
 
 Template.navigation.helpers({
 	get_unread_messages: function() {
-		var messages = User_messages.find().fetch();
+		var messages = User_messages.find({
+			username: Meteor.user().username
+		}).fetch();
 		var counter = 0;
 		for (var i in messages) {
 			if (!messages[i].is_read)

@@ -1,8 +1,15 @@
 
 Template.element.helpers({
+
+	is_self: function() {
+		return this.username === Meteor.user().username;
+	},
+
 	get_current_element: function() {
 		// return Session.get("current_element_in_group");
 		var current = Session.get("current_element_in_group");
+		// console.log(current);
+		// console.log(this);
 		var group = Groups.findOne({
 			_id: this._id,
 			// "beers._id": current._id
@@ -63,5 +70,16 @@ Template.element.events({
 		// 	element: String,
 		// 	type: String,
 		// 	group_id: String
+	},
+
+	"click #delete_score": function(event, template) {
+		Meteor.call("remove_points_given", {
+			group_id: Session.get("selected_group")._id,
+			beer_id: Session.get("current_element_in_group")._id
+		}, function(error, result) {
+			if (error) {
+				Show_message(error.reason);
+			}
+		});
 	}
 });

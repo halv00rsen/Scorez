@@ -9,13 +9,21 @@
 				<tr>
 					<th>Point</th>
 					<th>Username</th>
+					<th></th>
 				</tr>
 			</thead>
 			<tbody>
 				{{#each points}}
-					<tr class="animated out">
+					<tr>
 						<td>{{point}}</td>
 						<td>{{username}}</td>
+						<td>
+							{{#if is_self}}
+								<button id="delete_score" class="btn btn-xs btn-danger">
+									Delete
+								</button>
+							{{/if}}
+						</td>
 					</tr>
 				{{/each}}
 			</tbody>

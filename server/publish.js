@@ -1,5 +1,7 @@
 
 Meteor.publish("usernames", function() {
+	if (!this.userId)
+		return [];
 	return Meteor.users.find({}, {
 		fields: {
 			username: 1
@@ -18,6 +20,7 @@ Meteor.publish("users", function() {
 
 		// }
 	}
+	return [];
 });
 
 Meteor.publish("private_messages", function() {
@@ -31,6 +34,7 @@ Meteor.publish("private_messages", function() {
 			});
 		}
 	}
+	return [];
 });
 
 
@@ -52,6 +56,36 @@ Meteor.publish("your_group_names", function() {
 			});
 		}
 	}
+	return [];
+});
+
+
+Meteor.publish("invited_users_not_answered", function(group_id) {
+	check(group_id, String);
+
+	if (!this.userId) 
+		return [];
+
+	var user = Meteor.users.findOne({_id: this.userId});
+	var group = Groups.findOne({
+		_id: group_id,
+		members: {
+			$in: [user.username]
+		}
+	});
+
+	if (!group)
+		return [];
+
+	return User_messages.find({
+		group_id: group_id,
+		type: "invite",
+		is_read: false
+	}, {
+		fields: {
+			username: 1
+		}
+	});
 });
 
 
@@ -118,6 +152,7 @@ Meteor.publish("current_group", function(data) {
 			});
 		}
 	}
+	return [];
 });
 
 
@@ -137,4 +172,5 @@ Meteor.publish("deleted_groups", function() {
 		// console.log("Del groups: " + groups.fetch().length);
 		return groups;
 	}
+	return [];
 });

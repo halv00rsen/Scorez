@@ -25,13 +25,13 @@ Router.route("/login", {
 	layoutTemplate: null,
 	name: "login",
 	template: "login",
-	onBeforeAction: function() {
-		// console.log("Login");
-		if (Meteor.user()) {
-			Router.go("home");
-		} 
-		this.next();
-	}
+	// onBeforeAction: function() {
+	// 	// console.log("Login");
+	// 	if (Meteor.user()) {
+	// 		Router.go("home");
+	// 	} 
+	// 	this.next();
+	// }
 });
 
 Router.route("/", {
@@ -43,9 +43,6 @@ Router.route("/", {
 			this.subscribe("deleted_groups"),
 			this.subscribe("your_group_names")
 		];
-	},
-	subscriptions: function() {
-
 	}
 });
 

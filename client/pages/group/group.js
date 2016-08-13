@@ -1,10 +1,14 @@
 
 var subscribe = undefined;
+var invited = undefined;
 
 Template.group.destroyed = function() {
 	// console.log("destroyed");
 	if (subscribe) {
 		subscribe.stop();
+	}
+	if (invited){
+		invited.stop();
 	}
 	delete Session.keys["current_template_group"];
 	delete Session.keys["current_template_group_types"];
@@ -20,6 +24,8 @@ Template.group.created = function() {
 	Session.set("current_template_group_types", "all_types_group");
 	Session.set("current_template_group_members", "all_members_admin");
 	Session.set("have_subscribed_log_mobile", !Meteor.Device.isPhone());
+
+	invited = Meteor.subscribe("invited_users_not_answered", Session.get("selected_group")._id);
 	
 	// Meteor.call("log_text", this);
 	// console.log(this);
@@ -144,5 +150,16 @@ Template.group.events({
 			btn.removeClass("fa-minus").addClass("fa-plus");
 			template.$("#log-scroll").hide();
 		}
+	},
+
+	"click #leave-btn": function(event, template) {
+		// console.log(this);
+		Meteor.call("leave_group", {group_id: this._id}, function(error, result) {
+			if (error) {
+				Show_message(error.reason);
+			} else {
+				Router.go("home");
+			}
+		});
 	}
 });	

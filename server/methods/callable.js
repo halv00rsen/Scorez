@@ -462,6 +462,42 @@ Meteor.methods({
 		return "The type " + data.type + " was deleted.";
 	},
 
+	leave_group: function(data) {
+
+		if (!Meteor.user())
+			throw new Meteor.Error(530, "You are not logged in.");
+
+		check(data, {
+			group_id: String
+		});
+
+		var group = Groups.findOne({
+			_id: data.group_id,
+			members: {
+				$in: [Meteor.user().username]
+			}
+		});
+
+		if (!group)
+			throw new Meteor.Error(404, "Group not found.");
+
+		if (group.owner === Meteor.user().username) 
+			throw new Meteor.Error(400, "You cannot leave this group. Lock the group if you want to make it unaviable.");
+
+		Groups.update({_id: data.group_id}, {
+			$pull: {
+				members: Meteor.user().username
+			},
+			$push: {
+				logs: {
+					text: "The user " + Meteor.user().username + " has left the group.",
+					date: new Date(),
+					username: Meteor.user().username
+				}
+			}
+		});
+	},
+
 	remove_user_from_group: function(data) {
 
 		if (!Meteor.user())
@@ -594,6 +630,51 @@ Meteor.methods({
 		if (Groups.remove({_id: data.group_id}))
 			return "The group " + group.name + " was deleted.";
 		throw new Meteor.Error(403, "The group was not deleted.");
+	},
+
+	remove_points_given: function(data) {
+
+		if (!Meteor.user()) 
+			throw new Meteor.Error(530, "You are not logged in.");
+
+		check(data, {
+			group_id: String,
+			beer_id: String
+		});
+
+		var done = Groups.update({
+			group_id: data.group_id,
+			"beers._id": data.beer_id
+		}, {
+			$pull: {
+				"beers.$.points": {
+					username: Meteor.user().username
+				}
+			}
+		});
+		console.log("Done: " + done);
+
+
+		/*var group = Groups.findOne({_id: group_id});
+
+		if (!group) 
+			throw new Meteor.Error(404, "Group not found.");
+
+		var beer;
+		for (var i in group.beers) {
+			if (group.beers[i]._id == data.beer_id){
+				beer = group.beers[i];
+				break;
+			}
+		}
+
+		if (!beer) 
+			throw new Meteor.Error(404, "Beer not found.");
+
+		for (var i in beer.points) {
+
+		}*/
+
 	},
 
 	log_text: function(text) {

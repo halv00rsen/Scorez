@@ -6,18 +6,24 @@
 		<div class="col-md-8">
 			<h3>{{name}} by {{owner}}</h3>		
 		</div>
-		{{#if is_owner owner}}
 		<div class="col-md-4">
+		{{#if is_owner owner}}
 			<input type="text" name="group_id_delete" id="group_id_delete" value="{{_id}}" hidden>
 			<a id="delete-btn" class="btn btn-warning">
   				<i class="fa fa-lock fa-lg"></i> Lock
   			</a>
+
+  			
   			<!-- {{#linkTo route="group" username=owner group=name query="window=false" }}
 
   				hashtag
   			{{/linkTo}} -->
-		</div>
+  		{{else}}
+			<a id="leave-btn" class="btn btn-warning">
+				<i class="fa fa-sign-out" aria-hidden="true"></i> Leave group
+			</a>
 		{{/if}}
+		</div>
 	</div>
 
 	<div class="row">
