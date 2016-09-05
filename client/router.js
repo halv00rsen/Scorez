@@ -91,7 +91,7 @@ Router.route("/group/:username/:group", function() {
 	}
 }, {
 	name: "group",
-	loadingTemplate: 'loading',
+	// loadingTemplate: 'loading',
 	waitOn: function() {
 		console.log("is waiting...");
 		// console.log("Phone: " + Meteor.Device.isPhone());

@@ -4,6 +4,10 @@
 	</div>
 	{{> message_box}}
 	<div class="container">
-		{{> yield}}
+		{{#transition in="fadeIn:500" out="fadeOut:100"}}
+		<div class="animated out">
+			{{> yield}}
+		</div>
+		{{/transition}}
 	</div>
 </template>

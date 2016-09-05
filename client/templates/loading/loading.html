@@ -1,5 +1,9 @@
 <template name="loading">
-	<div id="loading-screen">
-		<i class="fa fa-spinner fa-5x fa-spin" aria-hidden="true"></i>
+	{{#transition in="fadeIn:300" out="fadeOut:300"}}
+	<div class="animated out">
+		<div id="loading-screen">
+			<i class="fa fa-spinner fa-5x fa-spin" aria-hidden="true"></i>
+		</div>
 	</div>
+	{{/transition}}
 </template>

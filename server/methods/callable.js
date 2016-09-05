@@ -26,7 +26,11 @@ Meteor.methods({
 		group.beers = [];
 		group.members.push(Meteor.user().username);
 		group.types = [];
-		group.logs = [];
+		group.logs = [{
+			text: "Group created.",
+			date: new Date(),
+			username: Meteor.user().username
+		}];
 		group.locked = false;
 
 		if (Groups.findOne({
