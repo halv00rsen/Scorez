@@ -1,0 +1,44 @@
+<template name="group_chat">
+	<div id="chat-box">
+		<div id="chat-text">
+			<div id="new-msg">
+				<p>New messages have arrived</p>
+			</div>
+			{{#each chat_messages}}
+				{{#if is_self username}}
+					<div class="chat-message right">
+						<label>
+							{{username}}
+						</label>
+						{{#each info}}
+							<p data-toggle="tooltip" title="{{get_date_pretty date}}" data-placement="right">{{text}}</p>
+							<br>
+						{{/each}}
+					</div>
+				{{else}}
+					<div class="chat-message">
+						<label>
+							{{username}}
+						</label>
+						{{#each info}}
+							<p data-toggle="tooltip" title="{{get_date_pretty date}}" data-placement="left">{{text}}</p>
+							<br>
+						{{/each}}
+					</div>
+				{{/if}}
+			{{/each}}
+			{{#each is_typing}}
+				{{#if show_typing this}}
+					<i>{{this}} is typing</i>
+				{{/if}}
+			{{/each}}
+		</div>
+		<div id="input-field">
+			<form name="send-msg">
+				<input type="text" name="input-chat" id="input-chat" autocomplete="off"/>
+				<input type="submit" name="send-chat" value="Send" id="send-btn">
+			</form>
+		</div>
+	</div>
+	{{scroll_down}}
+</template>
