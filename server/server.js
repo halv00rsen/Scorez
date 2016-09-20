@@ -13,3 +13,22 @@ Meteor.startup(function() {
 		}
 	}
 });
+
+
+Meteor.users.find({ "status.online": true }).observe({
+  added: function(id) {
+    // id just came online
+  },
+  removed: function(user) {
+    // id just went offline
+    Groups.update({
+    	members: {
+    		$in: [user.username]
+    	}
+    }, {
+    	$pull: {
+    		is_typing: user.username
+    	}
+    }, {multi: true});
+  }
+});
