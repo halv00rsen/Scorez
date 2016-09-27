@@ -56,7 +56,7 @@ Template.all_elements.helpers({
 	},
 
 	have_answered: function(data) {
-		var username = Meteor.user().username;
+		var username = get_username();
 		for (var i in data.points) {
 			if (data.points[i].username === username)
 				return true;

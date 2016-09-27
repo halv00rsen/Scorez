@@ -12,7 +12,7 @@ Template.group_chat.rendered = function() {
 
 Template.group_chat.helpers({
 	is_self: function(username) {
-		return username === Meteor.user().username;
+		return username === get_username();
 	},
 
 	scroll_down: function() {
@@ -45,7 +45,7 @@ Template.group_chat.helpers({
 	},
 
 	show_typing: function(name) {
-		return Meteor.user().username !== name;
+		return get_username() !== name;
 	}
 });
 

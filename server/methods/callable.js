@@ -10,6 +10,10 @@ var equal_usernames = function(username1, username2) {
 	return username1.toLowerCase() === username2.toLowerCase();
 }
 
+var only_letter_check = function(string) {
+	return new RegExp("^[a-zA-Z]+$").test(string);
+}
+
 Meteor.methods({
 	add_new_group: function(group) {
 
@@ -20,6 +24,8 @@ Meteor.methods({
 		check(group, {
 			name: String
 		});
+		if (!only_letter_check(group.name)) 
+			throw new Meteor.Error(412, "There is only allowed letters in the group name.");
 
 		group.members = [];
 		group.owner = Meteor.user().username;

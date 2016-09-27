@@ -7,12 +7,13 @@ Template.element.helpers({
 			_id: this._id,
 			// "beers._id": current._id
 		});
+		var username = get_username();
 		for (var i in group.beers) {
 			if (group.beers[i]._id === current._id){
 				var element = group.beers[i];
 				element.have_not_given = true;
 				for (var p in element.points) {
-					if (Meteor.user().username === element.points[p].username) {
+					if (username === element.points[p].username) {
 						element.have_not_given = false;
 						break;
 					}

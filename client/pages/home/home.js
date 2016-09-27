@@ -5,7 +5,7 @@ Template.home.helpers({
 			locked: {
 				$exists: false
 			},
-			owner: Meteor.user().username
+			owner: get_username()
 		}, {
 			sort: {
 				name: 1
@@ -18,7 +18,7 @@ Template.home.helpers({
 				$exists: false
 			},
 			owner: {
-				$ne: Meteor.user().username
+				$ne: get_username()
 			}
 		}, {
 			sort: {
@@ -27,10 +27,10 @@ Template.home.helpers({
 		})
 	},
 	is_owner: function(username) {
-		return username === Meteor.user().username && !this.locked;
+		return username === get_username() && !this.locked;
 	},
 	is_not_owner: function(username) {
-		return username !== Meteor.user().username;
+		return username !== get_username();
 	},
 	get_locked_groups: function() {
 		return Groups.find({locked: true});

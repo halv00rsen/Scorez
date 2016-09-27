@@ -7,11 +7,14 @@ Template.group.destroyed = function() {
 		subscribe.stop();
 	}
 	delete Session.keys["is_typing"];
-	var id = Session.get("selected_group")._id;
-	Meteor.call("set_typing_in_chat", {group_id: id, typing: false}, function(error, result) {
-		if (error)
-			console.log(error.reason);
-	});
+	var sel_group = Session.get("selected_group");
+	if (sel_group) {
+		var id = sel_group._id;
+		Meteor.call("set_typing_in_chat", {group_id: id, typing: false}, function(error, result) {
+			if (error)
+				console.log(error.reason);
+		});
+	}
 	delete Session.keys["current_template_group"];
 	delete Session.keys["current_template_group_types"];
 	delete Session.keys["current_template_group_members"];

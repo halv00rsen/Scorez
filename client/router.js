@@ -24,14 +24,14 @@ Router.route("/profile", {
 Router.route("/login", {
 	layoutTemplate: null,
 	name: "login",
-	template: "login",
-	onBeforeAction: function() {
-		// console.log("Login");
-		if (Meteor.user()) {
-			Router.go("home");
-		} 
-		this.next();
-	}
+	template: "login"
+	// onBeforeAction: function() {
+	// 	// console.log("Login");
+	// 	if (Meteor.user()) {
+	// 		Router.go("home");
+	// 	} 
+	// 	this.next();
+	// }
 });
 
 Router.route("/", {
@@ -39,6 +39,8 @@ Router.route("/", {
 	template: "home",
 	waitOn: function() {
 		console.log("Waiting on home.");
+		if (!Meteor.userId())
+			return;
 		return [
 			this.subscribe("deleted_groups"),
 			this.subscribe("your_group_names")
