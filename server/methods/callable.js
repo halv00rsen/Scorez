@@ -10,6 +10,10 @@ var equal_usernames = function(username1, username2) {
 	return username1.toLowerCase() === username2.toLowerCase();
 }
 
+var only_letter_check = function(string) {
+	return new RegExp("^[a-zA-Z]+$").test(string);
+}
+
 Meteor.methods({
 	add_new_group: function(group) {
 
@@ -20,12 +24,16 @@ Meteor.methods({
 		check(group, {
 			name: String
 		});
+		if (!only_letter_check(group.name)) 
+			throw new Meteor.Error(412, "There is only allowed letters in the group name.");
 
 		group.members = [];
 		group.owner = Meteor.user().username;
 		group.beers = [];
 		group.members.push(Meteor.user().username);
 		group.types = [];
+		group.chat_messages = [];
+		group.is_typing = [];
 		group.logs = [{
 			text: "Group created.",
 			date: new Date(),
@@ -573,6 +581,104 @@ Meteor.methods({
 				}
 			}
 		});
+	},
+
+	send_message_to_group: function(data) {
+
+		if (!Meteor.user()) 
+			throw new Meteor.Error(530, "You are not logged in.");
+
+		check(data, {
+			group_id: String,
+			text: String
+		});
+
+		var group = Groups.findOne({
+			_id: data.group_id,
+			locked: false,
+			members: {
+				$in: [Meteor.user().username]
+			}
+		});
+
+		if (!group) 
+			throw new Meteor.Error(404, "Group not found.");
+
+		var last_msg = group.chat_messages[group.chat_messages.length - 1]; 
+
+		if (last_msg && last_msg.username === Meteor.user().username) {
+			if (new Date() - last_msg.info[last_msg.info.length - 1].date < 60000) {
+				Groups.update({
+					_id: data.group_id,
+					"chat_messages._id": last_msg._id
+				}, {
+					$push: {
+						"chat_messages.$.info": {
+							date: new Date(),
+							text: data.text
+						}
+					},
+					$pull: {
+						is_typing: Meteor.user().username
+					}
+				});
+				return;
+			}		
+		}
+		Groups.update({
+			_id: data.group_id
+		}, {
+			$push: {
+				chat_messages: {
+					_id: Random.id(),
+					username: Meteor.user().username,
+					info: [{
+						date: new Date(),
+						text: data.text
+					}]
+				}
+			},
+			$pull: {
+				is_typing: Meteor.user().username
+			}
+		});
+	},
+
+	set_typing_in_chat: function(data) {
+
+		if (!Meteor.user()) 
+			throw new Meteor.Error(530, "You are not logged in.");
+
+		check(data, {
+			group_id: String,
+			typing: Boolean
+		});
+
+		var group = Groups.findOne({
+			_id: data.group_id,
+			members: {
+				$in: [Meteor.user().username]
+			}
+		});
+
+		if (!group)
+			throw new Meteor.Error(404, "Group not found.");
+
+		if (data.typing) {
+			if (group.is_typing.indexOf(Meteor.user().username) === -1) {
+				Groups.update({_id: data.group_id}, {
+					$push: {
+						is_typing: Meteor.user().username
+					}
+				});
+			}
+		} else {
+			Groups.update({_id: data.group_id}, {
+				$pull: {
+					is_typing: Meteor.user().username
+				}
+			})
+		}
 	},
 
 	delete_group: function(data) {

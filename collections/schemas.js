@@ -36,6 +36,11 @@ Schemas.User = new SimpleSchema({
 	    type: Object,
 	    optional: true,
 	    blackbox: true
+	},
+	status: {
+		type: Object,
+		optional: true,
+		blackbox: true
 	}
 });
 
@@ -212,6 +217,34 @@ Schemas.Log = new SimpleSchema({
 	}
 });
 
+Schemas.Chat_info = new SimpleSchema({
+	date: {
+		type: Date
+	},
+	text: {
+		type: String
+	}
+});
+
+Schemas.Chat_message = new SimpleSchema({
+	_id: {
+		type: String,
+		regEx: SimpleSchema.RegEx.Id
+	},
+	username: {
+		type: String
+	},
+	info: {
+		type: [Schemas.Chat_info]
+	}
+	// date: {
+	// 	type: [Date]
+	// },
+	// text: {
+	// 	type: [String]
+	// }
+});
+
 Schemas.Group = new SimpleSchema({
 	name: {
 		type: String,
@@ -244,6 +277,15 @@ Schemas.Group = new SimpleSchema({
 	locked: {
 		type: Boolean,
 		optional: false
+	},
+	chat_messages: {
+		type: [Schemas.Chat_message],
+		optional: false
+	},
+	is_typing: {
+		type: [String],
+		optional: false,
+		label: "List of users currently typing."
 	}
 });
 

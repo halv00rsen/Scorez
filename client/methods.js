@@ -1,4 +1,8 @@
 
+get_username = function() {
+	return Meteor.userId() && Meteor.user().username;
+}
+
 Methods = {
 	format_date: function(date) {
 	    return moment(date).calendar(null, {

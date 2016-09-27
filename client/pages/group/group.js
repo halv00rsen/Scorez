@@ -6,6 +6,15 @@ Template.group.destroyed = function() {
 	if (subscribe) {
 		subscribe.stop();
 	}
+	delete Session.keys["is_typing"];
+	var sel_group = Session.get("selected_group");
+	if (sel_group) {
+		var id = sel_group._id;
+		Meteor.call("set_typing_in_chat", {group_id: id, typing: false}, function(error, result) {
+			if (error)
+				console.log(error.reason);
+		});
+	}
 	delete Session.keys["current_template_group"];
 	delete Session.keys["current_template_group_types"];
 	delete Session.keys["current_template_group_members"];
@@ -120,6 +129,22 @@ Template.group.events({
 				Router.go("home");
 			}
 		});
+	},
+
+	"click #panel-chat-click": function(event, template) {
+		var btn = template.$("#chat-btn-collapse");
+		if (btn.hasClass("fa-plus")) {
+			$("#new-msg").hide();
+			btn.removeClass("fa-plus").addClass("fa-minus");
+			template.$("#group-chat-show").show();
+			template.$("#chat-text").animate({
+				scrollTop: template.$("#chat-text")[0].scrollHeight
+			}, "fast");
+		} else {
+			btn.removeClass("fa-minus").addClass("fa-plus");
+			template.$("#group-chat-show").hide();
+		}
+		template.$("#plus-sign-chat").hide();
 	},
 
 	"click #panel-log-click": function(event, template) {
