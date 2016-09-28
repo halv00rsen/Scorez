@@ -83,10 +83,12 @@ Router.route("/group/:username/:group", function() {
 	// if (!hash.current_template) {
 		
 	// }
+
 	if (!group) {
 		this.render("page_not_found");
 	} 
 	else {
+		this.subscribe("users_online_in_group", group._id);
 		// console.log(group);
 		Session.set("selected_group", group);
 		this.render("group", {data: group});
@@ -108,6 +110,9 @@ Router.route("/group/:username/:group", function() {
 			owner: this.params.username,
 			group_name: this.params.group
 		});
+	},
+	subscriptions: function() {
+		this.subscribe()
 	}
 });
 

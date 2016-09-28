@@ -4,6 +4,9 @@ Template.all_members_admin.helpers({
 		if (Meteor.user())
 			return owner == Meteor.user().username;
 		return false;
+	},
+	is_online: function(username) {
+		return Meteor.users.findOne({username: username}).status;
 	}
 });
 

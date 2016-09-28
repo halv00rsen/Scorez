@@ -138,3 +138,31 @@ Meteor.publish("deleted_groups", function() {
 		return groups;
 	}
 });
+
+
+Meteor.publish("users_online_in_group", function(group_id) {
+
+	if (this.userId) {
+		check(group_id, String);
+		var user = Meteor.users.findOne({_id: this.userId});
+		var group = Groups.findOne({
+			_id: group_id,
+			members: {
+				$in: [user.username]
+			}
+		});
+		if (group) {
+			return Meteor.users.find({
+				"status.online": true,
+				username: {
+					$in: group.members
+				}
+			}, {
+				fields: {
+					username: 1,
+					"status.online": 1
+				}
+			});
+		}
+	}
+});

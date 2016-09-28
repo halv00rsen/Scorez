@@ -10,8 +10,17 @@ var equal_usernames = function(username1, username2) {
 	return username1.toLowerCase() === username2.toLowerCase();
 }
 
-var only_letter_check = function(string) {
-	return new RegExp("^[a-zA-Z]+$").test(string);
+var only_password_check = function(passwd) {
+	return new RegExp("^[a-zA-Z0-9]+$").test(passwd);
+}
+
+var only_letter_check = function() {
+	for (var i = 0; i < arguments.length; i++) {
+		if (!new RegExp("^[a-zA-Z]+$").test(arguments[i])) {
+			return false;
+		}
+	}
+	return true;
 }
 
 Meteor.methods({
@@ -64,6 +73,9 @@ Meteor.methods({
 			group_id: String
 		});
 
+		if (!only_letter_check(data.type_name)) 
+			throw new Meteor.Error(412, "There is only allowed letters in the type name.");
+
 		var group = Groups.findOne({
 			_id: data.group_id,
 			locked: false
@@ -108,6 +120,12 @@ Meteor.methods({
 			username: String,
 			password: String
 		});
+
+		if (!only_letter_check(user.username)) 
+			throw new Meteor.Error(412, "There is only allowed letters in the username.");
+
+		if (!only_password_check(user.password)) 
+			throw new Meteor.Error(412, "Unvalid letters in password.");
 
 		if (Meteor.users.findOne({username: user.username})) {
 			throw new Meteor.Error(409, "The user '" + user.username + "' already exists.");
@@ -384,6 +402,8 @@ Meteor.methods({
 			type: String,
 			group_id: String
 		});
+
+		
 
 		var group = Groups.findOne({
 			_id: data.group_id,
