@@ -16,7 +16,7 @@ var only_password_check = function(passwd) {
 
 var only_letter_check = function() {
 	for (var i = 0; i < arguments.length; i++) {
-		if (!new RegExp("^[a-zA-Z]+$").test(arguments[i])) {
+		if (!new RegExp("^[a-zA-ZæøåÆØÅ0-9]+$").test(arguments[i])) {
 			return false;
 		}
 	}
