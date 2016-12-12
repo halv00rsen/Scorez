@@ -10,6 +10,56 @@ Meteor.publish("usernames", function() {
 	});
 });
 
+
+Meteor.publish("chat_messages", function() {
+	if (this.userId) {
+		var user = Meteor.users.findOne({_id: this.userId});
+		return Groups.find({
+			chat_messages_seen: {
+				$nin: [user.username]
+			},
+			members: {
+				$in: [user.username]
+			}
+		}, {
+			fields: {
+				name: 1,
+				owner: 1,
+				chat_messages_seen: 1,
+				chat_messages: 1
+			}
+		});
+	}
+});
+
+
+Meteor.publish("users_invited", function(data) {
+	if (this.userId) {
+		check(data, {
+			group_id: String
+		});
+		var user = Meteor.users.findOne({_id: this.userId});
+		var group = Groups.findOne({
+			_id: data.group_id,
+			members: {
+				$in: [user.username]
+			}
+		});
+		if (group) {
+			return User_messages.find({
+				is_read: false,
+				group_id: data.group_id,
+				type: "invite"
+			}, {
+				fields: {
+					username: 1
+				}
+			});
+		}		
+	}
+});
+
+
 Meteor.publish("users", function() {
 	if (this.userId && Roles.userIsInRole(this.userId, ["admin"])) {
 		return Meteor.users.find({});

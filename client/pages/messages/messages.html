@@ -17,6 +17,7 @@
 								<td class="invite-circle"><i class="fa fa-circle" aria-hidden="true" data-toggle="tooltip" data-placement="right" title="Not answered"></i></td>
 								{{/if}}
 								<td class="invite-text">
+								{{#if is_invite}}
 									The user <i>{{owner}}</i> invited you to the group <i>{{group_name}}</i>.
 									{{#if is_read}}
 										{{#if answered_yes}}
@@ -29,12 +30,29 @@
 										<a class="choose_value" name="yes" style="color: green;">Yes</a>. 
 										<a class="choose_value" name="no" style="color: red;">No</a>.
 									{{/if}}
+								{{else}}
+									{{message}}
+								{{/if}}
 								</td>
 							</tr>
 						{{/each}}
 						</tbody>
 					</table>
 				<!-- </div> -->
+			</div>
+		</div>
+		<div class="col-md-6">
+			<div class="panel panel-default">
+				<div class="panel-heading">New chat-messages in the following groups</div>
+				<table>
+					<tbody>
+						{{#each get_chat_messages}}
+						<tr>
+							<td>There are new messages in <i>{{name}}</i> by <i>{{owner}}</i>. <a href="{{pathFor 'group' username=owner group=name}}">Go to group page.</a></td>
+						</tr>
+						{{/each}}
+					</tbody>
+				</table>
 			</div>
 		</div>
 	</div>

@@ -71,7 +71,7 @@
 }
 
 #new-msg {
-	display: none;
+	/*display: none;*/
 	position: absolute;
 	text-align: center;
 	width: 100%;

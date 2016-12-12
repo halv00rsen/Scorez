@@ -43,6 +43,7 @@ Meteor.methods({
 		group.types = [];
 		group.chat_messages = [];
 		group.is_typing = [];
+		group.chat_messages_seen = [Meteor.user().username];
 		group.logs = [{
 			text: "Group created.",
 			date: new Date(),
@@ -176,7 +177,8 @@ Meteor.methods({
 		var invites = User_messages.find({
 			username: data.username,
 			owner: Meteor.user().username,
-			group_id: data.group_id
+			group_id: data.group_id,
+			type: "invite"
 		}).fetch();
 
 		for (var i in invites) {
@@ -534,6 +536,16 @@ Meteor.methods({
 			}
 		});
 
+		User_messages.insert({
+			group_id: data.group_id,
+			group_name: group.name,
+			username: data.username,
+			owner: Meteor.user().username,
+			type: "message",
+			message: "You have been removed from the group " + group.name + " by " + Meteor.user().username + ".",
+			is_read: false
+		});
+
 		return "The user " + data.username + " was deleted from the group.";
 	},
 
@@ -640,6 +652,9 @@ Meteor.methods({
 					},
 					$pull: {
 						is_typing: Meteor.user().username
+					},
+					$set: {
+						chat_messages_seen: [Meteor.user().username]
 					}
 				});
 				return;
@@ -660,9 +675,42 @@ Meteor.methods({
 			},
 			$pull: {
 				is_typing: Meteor.user().username
+			},
+			$set: {
+				chat_messages_seen: [Meteor.user().username]
 			}
 		});
 	},
+
+
+	set_message_seen_group: function(data) {
+
+		if (!Meteor.user()) {
+			throw new Meteor.Error(530, "You are not logged in.");
+		}
+
+		check(data, {
+			group_id: String
+		});
+
+		var group = Groups.findOne({
+			_id: data.group_id,
+			members: {
+				$in: [Meteor.user().username]
+			}
+		});
+
+		if (!group) {
+			throw new Meteor.Error(404, "Group not found.");
+		}
+
+		Groups.update({_id: group._id}, {
+			$push: {
+				chat_messages_seen: Meteor.user().username
+			}
+		});
+	},
+
 
 	set_typing_in_chat: function(data) {
 

@@ -1,9 +1,11 @@
 <template name="group_chat">
 	<div id="chat-box">
 		<div id="chat-text">
+			{{#if has_not_seen_new_messages}}
 			<div id="new-msg">
 				<p>New messages have arrived</p>
 			</div>
+			{{/if}}
 			{{#each chat_messages}}
 				{{#if is_self username}}
 					<div class="chat-message right">

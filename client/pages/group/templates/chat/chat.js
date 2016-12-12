@@ -15,25 +15,33 @@ Template.group_chat.helpers({
 		return username === get_username();
 	},
 
+	has_not_seen_new_messages: function() {
+		return this.chat_messages_seen.indexOf(get_username()) == -1;
+	},
+
 	scroll_down: function() {
 		if ($("#chat-btn-collapse").hasClass("fa-plus")) {
-			$("#plus-sign-chat").show();
+			// $("#plus-sign-chat").show();
 		}
 		if (!$("#chat-text")[0])
 			return;
 		var scrollheight = $("#chat-text").scrollTop() + $("#chat-text").height();
 		if (scrollheight !== $("#chat-text")[0].scrollHeight) {
-			$("#new-msg").show();
+			// $("#new-msg").show();
 			console.log("Not scrolling to bottom.");
 		} else {
 			$("#chat-text").animate({
 				scrollTop: $("#chat-text")[0].scrollHeight
 			}, "slow");
-			$("#new-msg").hide();
+			// $("#new-msg").hide();
 			console.log("Scrolling to bottom.");
+			if (this.chat_messages_seen.indexOf(get_username()) == -1) {
+				console.log("calling doctor love!");
+				Meteor.call("set_message_seen_group", {group_id: this._id});
+			}
 		}
 	},
-
+// 
 	get_date_pretty: function(date) {
 		var hour = date.getHours();
 		var minutes = date.getMinutes();
@@ -75,7 +83,8 @@ Template.group_chat.events({
 		template.$("#chat-text").animate({
 			scrollTop: $("#chat-text")[0].scrollHeight
 		}, "slow");
-		template.$("#new-msg").hide();
+		Meteor.call("set_message_seen_group", {group_id: this._id});
+		// template.$("#new-msg").hide();
 	},
 
 	"keyup #input-chat": function(event, template) {

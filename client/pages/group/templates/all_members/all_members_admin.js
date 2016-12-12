@@ -5,8 +5,13 @@ Template.all_members_admin.helpers({
 			return owner == Meteor.user().username;
 		return false;
 	},
+	
 	is_online: function(username) {
 		return Meteor.users.findOne({username: username}).status;
+	},
+
+	get_invited_members: function() {
+		return User_messages.find();
 	}
 });
 

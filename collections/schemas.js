@@ -60,11 +60,11 @@ Schemas.User_message = new SimpleSchema({
 	group_id: {
 		type: String,
 		regEx: SimpleSchema.RegEx.Id,
-		optional: false
+		optional: true
 	},
 	group_name: {
 		type: String,
-		optional: false
+		optional: true
 	},
 	username: {
 		type: String,
@@ -77,8 +77,12 @@ Schemas.User_message = new SimpleSchema({
 	},
 	type: {
 		type: String,
-		allowedValues: ["invite"],
+		allowedValues: ["invite", "message"],
 		optional: false
+	},
+	message: {
+		type: String,
+		optional: true
 	},
 	is_read: {
 		type: Boolean,
@@ -286,6 +290,11 @@ Schemas.Group = new SimpleSchema({
 		type: [String],
 		optional: false,
 		label: "List of users currently typing."
+	},
+	chat_messages_seen: {
+		type: [String],
+		optional: false,
+		label: "List of users that have seen the last message sent."
 	}
 });
 

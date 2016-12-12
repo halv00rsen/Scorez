@@ -51,6 +51,10 @@ Template.group.helpers({
 		return [];
 	},
 
+	is_new_messages: function() {
+		return this.chat_messages_seen.indexOf(get_username()) == -1;
+	},
+
 	get_current_template_types: function() {
 		return Session.get("current_template_group_types");
 	},
@@ -134,17 +138,20 @@ Template.group.events({
 	"click #panel-chat-click": function(event, template) {
 		var btn = template.$("#chat-btn-collapse");
 		if (btn.hasClass("fa-plus")) {
-			$("#new-msg").hide();
+			// $("#new-msg").hide();
 			btn.removeClass("fa-plus").addClass("fa-minus");
 			template.$("#group-chat-show").show();
 			template.$("#chat-text").animate({
 				scrollTop: template.$("#chat-text")[0].scrollHeight
 			}, "fast");
+			if (this.chat_messages_seen.indexOf(get_username()) == -1) {
+				Meteor.call("set_message_seen_group", {group_id: this._id});
+			}
 		} else {
 			btn.removeClass("fa-minus").addClass("fa-plus");
 			template.$("#group-chat-show").hide();
 		}
-		template.$("#plus-sign-chat").hide();
+		// template.$("#plus-sign-chat").hide();
 	},
 
 	"click #panel-log-click": function(event, template) {

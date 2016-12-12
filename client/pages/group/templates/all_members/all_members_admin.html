@@ -22,6 +22,21 @@
 					</td>
 				</tr>
 				{{/each}}
+				{{#each get_invited_members}}
+				<tr>
+					<td>
+						<i class="fa fa-circle-thin" aria-hidden="true" title="Offline"></i>
+					</td>
+					<td>
+						<i>{{username}}</i> is invited.
+					</td>
+					<td>
+						<button class="btn btn-xs btn-warning">
+							Remove invitation
+						</button>
+					</td>
+				</tr>
+				{{/each}}
 			{{else}}
 				{{#each members}}
 				<tr>

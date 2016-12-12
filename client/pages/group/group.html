@@ -35,7 +35,10 @@
 		<div class="col-md-4">
 			<div class="panel panel-default">
 				<div id="panel-chat-click" class="panel-heading">
-					Group chat <span id="plus-sign-chat" style="display: none;">(<i>New messages</i>)</span>
+					Group chat 
+					{{#if is_new_messages}}
+					<span id="plus-sign-chat">(<i>New messages</i>)</span>
+					{{/if}}
 					<span class="pull-right"><i id="chat-btn-collapse" class="fa fa-plus fa-lg" aria-hidden="true"></i></span>
 				</div>
 				<div id="group-chat-show" style="display: none;"> 

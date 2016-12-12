@@ -89,6 +89,7 @@ Router.route("/group/:username/:group", function() {
 	} 
 	else {
 		this.subscribe("users_online_in_group", group._id);
+		this.subscribe("users_invited", {group_id: group._id});
 		// console.log(group);
 		Session.set("selected_group", group);
 		this.render("group", {data: group});
@@ -112,7 +113,7 @@ Router.route("/group/:username/:group", function() {
 		});
 	},
 	subscriptions: function() {
-		this.subscribe()
+		// this.subscribe()
 	}
 });
 
@@ -176,7 +177,10 @@ Router.route("/admin", {
 
 Router.route("/messages", {
 	name: "messages",
-	template: "messages"
+	template: "messages",
+	subscriptions: function() {
+		this.subscribe("chat_messages");
+	}
 });
 
 // Router.route("/", function() {
