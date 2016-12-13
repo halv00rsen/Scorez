@@ -9,6 +9,7 @@
 				<tr>
 					<th>Point</th>
 					<th>Username</th>
+					<th></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -16,13 +17,18 @@
 					<tr class="animated ">
 						<td>{{point}}</td>
 						<td>{{username}}</td>
+						<td>
+							{{#if if_self_element}}
+								<button class="btn btn-xs btn-warning delete_score">Delete</button>
+							{{/if}}
+						</td>
 					</tr>
 				{{/each}}
 			</tbody>
 		</table>
 		{{#if have_not_given}}
 		<form>
-			<input type="text" name="score" autocomplete="off">
+			<input type="number" name="score" autocomplete="off">
 			<input type="submit" name="submit" value="Give points">
 		</form>
 		{{/if}}

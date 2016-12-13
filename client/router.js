@@ -58,7 +58,10 @@ Router.route("/loading", {
 
 Router.route("/new_group", {
 	name: "new_group",
-	template: "new_group"
+	template: "new_group",
+	subscriptions: function() {
+		this.subscribe("group_scorings");
+	}
 });
 
 Router.route("/group/:username/:group", function() {
@@ -92,6 +95,7 @@ Router.route("/group/:username/:group", function() {
 		this.subscribe("users_invited", {group_id: group._id});
 		// console.log(group);
 		Session.set("selected_group", group);
+		Session.set("beers", Elements.find({group_id: group._id}).fetch());
 		this.render("group", {data: group});
 	}
 }, {
@@ -163,6 +167,7 @@ Router.route("/admin", {
 	template: "admin",
 	subscriptions: function() {
 		this.subscribe("users");
+		this.subscribe("group_scorings");
 		// this.subscribe("groups");
 
 		// this.subscribe("groups").wait();

@@ -118,6 +118,11 @@ Schemas.Point = new SimpleSchema({
 		type: String,
 		optional:false,
 		label: "Who gave the point"
+	},
+	_id: {
+		type: String,
+		optional: false,
+		regEx: SimpleSchema.RegEx.Id
 	}
 });
 
@@ -249,6 +254,69 @@ Schemas.Chat_message = new SimpleSchema({
 	// }
 });
 
+
+Schemas.Elements = new SimpleSchema({
+	name: {
+		type: String,
+		max: 40,
+		min: 2,
+		optional: false
+	},
+	type: {
+		type: String,
+		optional: false
+	},
+	points: {
+		type: [Schemas.Point],
+		optional: false
+	},
+	score: {
+		type: String,
+		optional: false
+	},
+	group_id: {
+		type: String,
+		optional: false,
+		regEx: SimpleSchema.RegEx.Id
+	}
+});
+
+
+Schemas.Group_scorings = new SimpleSchema({
+	// group_id: {
+	// 	type: String,
+	// 	optional: false,
+	// 	regEx: SimpleSchema.RegEx.Id
+	// },
+	name: {
+		type: String,
+		optional: false,
+		max: 40
+	},
+	description: {
+		type: String,
+		optional: true,
+		max: 140
+	},
+	min_point: {
+		type: Number,
+		optional: false
+	},
+	max_point: {
+		type: Number,
+		optional: false
+	},
+	multiple_scorez: {
+		type: Boolean,
+		optional: false
+	},
+	plus_minus: {
+		type: Boolean,
+		optional: false
+	}
+});
+
+
 Schemas.Group = new SimpleSchema({
 	name: {
 		type: String,
@@ -264,10 +332,15 @@ Schemas.Group = new SimpleSchema({
 		optional: false,
 		label: "List of usernames"
 	},
-	beers: {
-		type: [Schemas.Beer],
-		// blackbox: true,
-		optional: false
+	// beers: {
+	// 	type: [Schemas.Beer],
+	// 	// blackbox: true,
+	// 	optional: false
+	// },
+	scoring: {
+		type: String,
+		optional: false,
+		regEx: SimpleSchema.RegEx.Id
 	},
 	types: {
 		type: [Schemas.Type],
@@ -301,8 +374,12 @@ Schemas.Group = new SimpleSchema({
 Groups = new Mongo.Collection("groups");
 User_messages = new Mongo.Collection("user_messages");
 System_logs = new Mongo.Collection("system_log");
+Group_scorings = new Mongo.Collection("group_scorings");
+Elements = new Mongo.Collection("elements");
 
 Meteor.users.attachSchema(Schemas.User);
 Groups.attachSchema(Schemas.Group);
 User_messages.attachSchema(Schemas.User_message);
 System_logs.attachSchema(Schemas.System_log);
+Group_scorings.attachSchema(Schemas.Group_scorings);
+Elements.attachSchema(Schemas.Elements);

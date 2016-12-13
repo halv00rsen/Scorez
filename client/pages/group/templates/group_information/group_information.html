@@ -1,0 +1,56 @@
+<template name="group_information">
+	<table class="table">
+		<tbody>
+			{{#with info}}
+			<tr>
+				<td>Name</td>
+				<td>{{name}}</td>
+			</tr>
+			<tr>
+				<td>Owner</td>
+				<td>{{owner}}</td>
+			</tr>
+			<tr>
+				<td>Num elements</td>
+				<td>{{num_elements}}</td>
+			</tr>
+			<tr>
+				<td>Num types</td>
+				<td>{{num_types}}</td>
+			</tr>
+			<tr>
+				<td>Scoring type</td>
+				<td>{{scoring}}</td>
+			</tr>
+			<tr>
+				<td>Min points</td>
+				<td>{{min_point}}</td>
+			</tr>
+			<tr>
+				<td>Max points</td>
+				<td>{{max_point}}</td>
+			</tr>
+			<tr>
+				<td>Multiple</td>
+				<td>
+					{{#if multiple}}
+						Yes
+					{{else}}
+						No
+					{{/if}}
+				</td>
+			</tr>
+			<tr>
+				<td>Plus/Minus</td>
+				<td>
+					{{#if plus}}
+						Yes
+					{{else}}
+						No
+					{{/if}}
+				</td>
+			</tr>
+			{{/with}}	
+		</tbody>
+	</table>
+</template>

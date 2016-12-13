@@ -1,0 +1,35 @@
+<template name="new_scoring_type_admin">
+	<h4>Create new scoring type</h4>
+	<br/>
+	<form>
+		<div class="row">
+			<div class="col-md-6 form-group">
+				<label for="scoring_name">Scoring type name:</label>
+				<input required="true" class="form-control" type="text" name="scoring_name">
+			</div>
+			<div class="col-md-3 form-group">
+				<label for="min_value">Minimum value:</label>
+				<input required="true" class="form-control" type="number" name="min_value">
+			</div>
+			<div class="col-md-3 form-group">
+				<label for="max_value">Max value:</label>
+				<input required="true" class="form-control" type="number" name="max_value">
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-4 form-group">
+				<label class="checkbox-inline"><input type="checkbox" value="" name="multiple_scorez">Give multiple scorez (by user)</label>
+			</div>
+			<div class="col-md-4 form-group">
+				<label class="checkbox-inline"><input type="checkbox" value="" name="plus_minus_scorez">Can use plus and minus</label>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12 form-group">
+				<label for="description">Description of scoring type (optional)</label>
+				<textarea maxlength="140" class="form-control" placeholder="Write a simple description for the meaning of the scoring scheme. (max 140 characters)" name="description"></textarea>
+			</div>
+		</div>
+		<input type="submit" name="save" value="Save" class="btn btn-default">
+	</form>
+</template>

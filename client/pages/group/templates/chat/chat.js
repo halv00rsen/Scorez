@@ -16,6 +16,9 @@ Template.group_chat.helpers({
 	},
 
 	has_not_seen_new_messages: function() {
+		// console.log(this.chat_messages_seen);
+		if (!this.chat_messages_seen)
+			return false;
 		return this.chat_messages_seen.indexOf(get_username()) == -1;
 	},
 

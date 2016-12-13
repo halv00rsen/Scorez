@@ -14,6 +14,8 @@
 
 #admin_content {
 	border: 1px solid #3399ff;
+	padding-top: 1em;
+	padding-bottom: 1em;
 }
 
 .open {

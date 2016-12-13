@@ -154,6 +154,17 @@ Template.group.events({
 		// template.$("#plus-sign-chat").hide();
 	},
 
+	"click #info-bar-show": function(event, template) {
+		var btn = template.$("#info-btn-collapse");
+		if (btn.hasClass("fa-plus")) {
+			btn.removeClass("fa-plus").addClass("fa-minus");
+			template.$("#info-bar").show();
+		} else {
+			btn.removeClass("fa-minus").addClass("fa-plus");
+			template.$("#info-bar").hide();
+		}
+	},
+
 	"click #panel-log-click": function(event, template) {
 		// console.log("heisann");
 		// console.log(event.target.hasClass("fa-plus"));

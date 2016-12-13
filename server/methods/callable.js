@@ -24,21 +24,25 @@ var only_letter_check = function() {
 }
 
 Meteor.methods({
-	add_new_group: function(group) {
+	add_new_group: function(data) {
 
 		if (!Meteor.userId()) {
 			throw new Meteor.Error(530, "You are not logged in.");
 		}
 
-		check(group, {
-			name: String
+		check(data, {
+			name: String,
+			scoring_id: String
 		});
-		if (!only_letter_check(group.name)) 
+		if (!only_letter_check(data.name)) 
 			throw new Meteor.Error(412, "There is only allowed letters in the group name.");
 
+		group = {};
+		group.name = data.name;
+		group.scoring = data.scoring_id;
 		group.members = [];
 		group.owner = Meteor.user().username;
-		group.beers = [];
+		// group.beers = [];
 		group.members.push(Meteor.user().username);
 		group.types = [];
 		group.chat_messages = [];
@@ -263,52 +267,43 @@ Meteor.methods({
 
 		var group = Groups.findOne({
 			_id: data.group_id,
-			locked: false
+			locked: false,
+			members: {
+				$in: [Meteor.user().username]
+			}
 		});
 
 		if (!group) 
 			throw new Meteor.Error(404, "Group not found.");
 
-		if (group.members.indexOf(Meteor.user().username) === -1) 
-			throw new Meteor.Error(404, "Group not found.");
+		var group_scoring = Group_scorings.findOne({
+			_id: group.scoring
+		});
 
-		var index = -1, points = undefined;
-		for (var i in group.beers) {
-			if (group.beers[i].name === data.element && group.beers[i].type === data.type) {
-				index = i;
-				points = group.beers[i].points;
-				break;
-			}
+		if (data.point < group_scoring.min_point || 
+			data.point > group_scoring.max_point) {
+			throw new Meteor.Error(400, "Wrong format on point.");
 		}
 
-		if (index === -1)
+		var element = Elements.findOne({
+			_id: data.element_id
+		});
+
+		if (!element) {
 			throw new Meteor.Error(404, "Element not found.");
+		}
 
 		var score = 0;
-		for (var i in points) {
-			if (points[i].username === Meteor.user().username)
-				throw new Meteor.Error(400, "You have given a score to this element before.");
-			score += points[i].point;
+		for (var i in element.points) {
+			if (element.points[i].username === Meteor.user().username && !group_scoring.multiple_scorez) {
+				throw new Meteor.Error(400, "You have given a score to this element before.")
+			}
+			score += element.points[i].point;
 		}
 
 		score += data.point;
 
-		score = score / (points.length + 1);
-		// console.log(data.element + "  " + data.type);
-		// console.log(score);
-
-		// var hei = Groups.find({
-		// 	_id: data.group_id,
-		// 	"beers.name": data.element,
-		// 	"beers.type": data.type 
-		// }).fetch();
-
-		// for (var i in hei) {
-		// 	console.log(hei[i].name);
-		// }
-
-		// 	"beers.name": data.element,
-		// 	"beers.type": data.type
+		score = score / (element.points.length + 1);
 
 		Groups.update({
 			_id: data.group_id
@@ -322,21 +317,36 @@ Meteor.methods({
 			}
 		});
 
-		Groups.update({
-			_id: data.group_id,
-			"beers._id": data.element_id
-			// "beers.type": data.type
+		Elements.update({
+			_id: data.element_id
 		}, {
 			$push: {
-				"beers.$.points": {
+				"points": {
 					point: data.point,
-					username: Meteor.user().username
+					username: Meteor.user().username,
+					_id: Random.id()
 				}
 			},
 			$set: {
-				"beers.$.score": score.toFixed(2)
+				score: score.toFixed(2)
 			}
 		});
+
+		// Groups.update({
+		// 	_id: data.group_id,
+		// 	"beers._id": data.element_id
+		// 	// "beers.type": data.type
+		// }, {
+		// 	$push: {
+		// 		"beers.$.points": {
+		// 			point: data.point,
+		// 			username: Meteor.user().username
+		// 		}
+		// 	},
+		// 	$set: {
+		// 		"beers.$.score": score.toFixed(2)
+		// 	}
+		// });
 
 	},
 
@@ -365,6 +375,84 @@ Meteor.methods({
 		user.roles.push(data.role);
 		return user;
 	},
+
+
+	delete_score_from_element: function(data) {
+		check(data, {
+			point_id: String,
+			group_id: String,
+			element_id: String
+		});
+
+		if (!Meteor.user().username) {
+			throw new Meteor.Error(530, "You are not logged in.");
+		}
+
+		var group = Groups.findOne({
+			_id: data.group_id,
+			members: {
+				$in: [Meteor.user().username]
+			}
+		});
+
+		if (!group) {
+			throw new Meteor.Error(404, "Group not found.");
+		}
+
+		var element = Elements.findOne({
+			_id: data.element_id
+		});
+
+		if (!element) {
+			throw new Meteor.Error(404, "Element not found.");
+		}
+
+		// Groups.update({
+		// 			_id: data.group_id,
+		// 			"chat_messages._id": last_msg._id
+		// 		}, {
+		// 			$push: {
+		// 				"chat_messages.$.info": {
+		// 					date: new Date(),
+		// 					text: data.text
+		// 				}
+		// 			},
+
+		var points = element.points;
+		var found = false;
+		var score = 0;
+		for (var i in points) {
+			if (points[i]._id === data.point_id && points[i].username === Meteor.user().username) {
+				found = true;
+			} else {
+				score += points[i].point;
+			}
+		}
+		if (!found) {
+			throw new Meteor.Error(404, "Score was not found.");
+		}
+
+		var save_score;
+		if (element.points.length <= 1) {
+			save_score = 0;
+		} else {
+			save_score = score / (element.points.length - 1);
+		}
+
+		Elements.update({
+			_id: data.element_id
+		}, {
+			$pull: {
+				points: {
+					_id: data.point_id
+				}
+			},
+			$set: {
+				score: save_score.toFixed(2)
+			}
+		});
+	},
+
 
 	remove_role_from_user: function(data) {
 
@@ -405,17 +493,16 @@ Meteor.methods({
 			group_id: String
 		});
 
-		
 
 		var group = Groups.findOne({
 			_id: data.group_id,
-			locked: false
+			locked: false,
+			members: {
+				$in: [Meteor.user().username]
+			}
 		});
 
 		if (!group)
-			throw new Meteor.Error(404, "Group not found.");
-
-		if (group.members.indexOf(Meteor.user().username) === -1)
 			throw new Meteor.Error(404, "Group not found.");
 
 		var type = undefined;
@@ -429,22 +516,32 @@ Meteor.methods({
 		if (!type)
 			throw new Meteor.Error(404, "The type " + data.type + " was not found in this group.");
 
-		for (var i in group.beers) {
-			if (group.beers[i].name.toLowerCase() === data.name.toLowerCase() && group.beers[i].type == data.type)
+		var elements = Elements.find({group_id: data.group_id}).fetch();
+
+		for (var i in elements) {
+			if (elements[i].name.toLowerCase() === data.name.toLowerCase() && elements[i].type == data.type)
 				throw new Meteor.Error(409, "The element " + data.name + " with type " + data.type + " already exist.");
 		}
 
+		var elem_id = Elements.insert({
+			name: data.name,
+			type: type,
+			points: [],
+			score: "0",
+			group_id: data.group_id
+		});
+
 		var id = Groups.update({_id: data.group_id}, {
 			$push: {
-				beers: {
-					name: data.name,
-					type: type,
-					points: [],
-					score: "0",
-					_id: Random.id()
-				},
+				// beers: {
+				// 	name: data.name,
+				// 	type: type,
+				// 	points: [],
+				// 	score: "0",
+				// 	_id: Random.id()
+				// },
 				logs: {
-					text: "The element " + data.name + " with type " + type + " was added.",
+					text: "The element " + data.name + " with type " + type + " was added.", // Elem_id: " + elem_id,
 					date: new Date(),
 					username: Meteor.user().username
 				}
@@ -769,9 +866,41 @@ Meteor.methods({
 		if (!group.locked) 
 			throw new Meteor.Error(400, "This group is not locked.");
 
-		if (Groups.remove({_id: data.group_id}))
+		if (Groups.remove({_id: data.group_id})) {
+			Elements.remove({
+				group_id: data.group_id
+			});
 			return "The group " + group.name + " was deleted.";
+		}
 		throw new Meteor.Error(403, "The group was not deleted.");
+	},
+
+
+	create_group_scoring: function(data) {
+
+		if (!Meteor.user()) {
+			throw new Meteor.Error(530, "You are not logged in.");
+		}
+
+		if (!Roles.userIsInRole(Meteor.user(), ["admin"])) {
+			throw new Meteor.Error(430, "You do not have access to do this action.");
+		}
+
+		check(data, {
+			plus_minus: Boolean,
+			min_point: Number,
+			max_point: Number,
+			multiple_scorez: Boolean,
+			description: String,
+			name: String
+		});
+
+		if (data.min_point > data.max_point) {
+			throw new Meteor.Error(400, "Min point have to be less than max point.");
+		}
+
+
+		Group_scorings.insert(data);
 	},
 
 	log_text: function(text) {

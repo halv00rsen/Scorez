@@ -11,6 +11,15 @@ Meteor.publish("usernames", function() {
 });
 
 
+Meteor.publish("group_scorings", function() {
+	if (this.userId) {
+		return Group_scorings.find({
+			
+		});
+	}
+});
+
+
 Meteor.publish("chat_messages", function() {
 	if (this.userId) {
 		var user = Meteor.users.findOne({_id: this.userId});
@@ -120,9 +129,21 @@ Meteor.publish("current_group", function(data) {
 	if (this.userId) {
 		var user = Meteor.users.findOne({_id: this.userId});
 		if (user){
+
+			var group = Groups.findOne({
+				owner: data.owner,
+				name: data.group_name,
+				locked: false,
+				$or: [
+					{owner: user.username},
+					{members: {$in: [user.username]}}
+				]
+			});
+
 			if (data.is_phone && !data.override) {
 				// console.log("Phone and no override");
-				return Groups.find({
+
+				return [Groups.find({
 					owner: data.owner,
 					name: data.group_name,
 					locked: false,
@@ -134,10 +155,16 @@ Meteor.publish("current_group", function(data) {
 					fields: {
 						logs: 0
 					}
-				});
+				}),
+				Elements.find({
+					group_id: group._id
+				}),
+				Group_scorings.find({
+					_id: group.scoring
+				})];
 			} else if (data.is_phone && data.override) {
 				// console.log("Phone and override");
-				return Groups.find({
+				return [Groups.find({
 					owner: data.owner,
 					name: data.group_name,
 					locked: false,
@@ -149,10 +176,16 @@ Meteor.publish("current_group", function(data) {
 					fields: {
 						logs: 1
 					}
-				});
+				}),
+				Elements.find({
+					group_id: group._id
+				}),
+				Group_scorings.find({
+					_id: group.scoring
+				})];
 			}
 			// console.log("No phone and no override");
-			return Groups.find({
+			return [Groups.find({
 					owner: data.owner,
 					name: data.group_name,
 					locked: false,
@@ -165,7 +198,13 @@ Meteor.publish("current_group", function(data) {
 				// 	name: 1,
 				// 	owner: 1
 				// }
-			});
+			}),
+			Elements.find({
+				group_id: group._id
+			}),
+			Group_scorings.find({
+				_id: group.scoring
+			})];
 		}
 	}
 });

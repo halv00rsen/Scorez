@@ -1,0 +1,41 @@
+<template name="scoring_types_admin">
+	<h4>All scoring types</h4>
+	<br/>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Name</th>
+				<th>Description</th>
+				<th>Minimum</th>
+				<th>Maximum</th>
+				<th>Multiple</th>
+				<th>Plus/Minus</th>
+			</tr>
+		</thead>
+		<tbody>
+			{{#each scorings}}
+				<tr>
+					<td>{{name}}</td>
+					<td>{{description}}</td>
+					<td>{{min_point}}</td>
+					<td>{{max_point}}</td>
+					<td>
+					{{#if multiple_scorez}}
+						Yes
+					{{else}}
+						No
+					{{/if}}
+					</td>
+					<td>
+					{{#if plus_minus}}
+						Yes
+					{{else}}
+						No
+					{{/if}}
+					</td>
+				</tr>
+			{{/each}}
+		</tbody>
+	</table>
+</template>
+

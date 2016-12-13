@@ -1,20 +1,21 @@
 <template name="new_group">
 	<h3>New group</h3>
 	{{> message_box}}
-	<form class="table">
-		<table>
-			<tr>
-				<td>
-					<label>Name:</label>
-				</td>
-				<td>
-					<input type="text" name="groupname">
-				</td>
-			</tr>	
-			<tr>
-				<td></td>
-				<td><input type="submit" name="submit" value="Create"/></td>
-			</tr>
-		</table>
+	<form>
+		<div class="form-group">
+			<label for="group_name">Group name</label>
+			<input required="true" class="form-control" type="text" name="group_name">
+		</div>
+		<div class="form-group">
+			<label for="scoring_types">Scoring type</label>
+			<select name="scoring_types" class="form-control">
+				{{#each scoring}}
+					<option value="{{_id}}">
+						{{name}} ({{min_point}}-{{max_point}})
+					</option>
+				{{/each}}
+			</select>
+		</div>
+		<input type="submit" name="submit" value="Save" class="btn btn-default">
 	</form>
 </template>
