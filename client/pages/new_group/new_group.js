@@ -1,4 +1,11 @@
 
+Template.new_group.helpers({
+	scoring: function() {
+		return Group_scorings.find();
+	}
+});
+
+
 Template.new_group.events({
 
 	// Add new group to user
@@ -7,7 +14,8 @@ Template.new_group.events({
 		event.preventDefault();
 
 		var group = {};
-		group.name = event.target.groupname.value;
+		group.name = event.target.group_name.value;
+		group.scoring_id = event.target.scoring_types.options[event.target.scoring_types.selectedIndex].value
 
 		if (!group.name) {
 			Show_message("Name is required.");
@@ -19,7 +27,7 @@ Template.new_group.events({
 				console.log(error);
 				Show_message(error.reason);
 			} else {
-				event.target.groupname.value = "";
+				// event.target.groupname.value = "";
 				Router.go("home");
 			}
 		});

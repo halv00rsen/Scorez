@@ -10,6 +10,65 @@ Meteor.publish("usernames", function() {
 	});
 });
 
+
+Meteor.publish("group_scorings", function() {
+	if (this.userId) {
+		return Group_scorings.find({
+			
+		});
+	}
+});
+
+
+Meteor.publish("chat_messages", function() {
+	if (this.userId) {
+		var user = Meteor.users.findOne({_id: this.userId});
+		return Groups.find({
+			chat_messages_seen: {
+				$nin: [user.username]
+			},
+			members: {
+				$in: [user.username]
+			}
+		}, {
+			fields: {
+				name: 1,
+				owner: 1,
+				chat_messages_seen: 1,
+				chat_messages: 1
+			}
+		});
+	}
+});
+
+
+Meteor.publish("users_invited", function(data) {
+	if (this.userId) {
+		check(data, {
+			group_id: String
+		});
+		var user = Meteor.users.findOne({_id: this.userId});
+		var group = Groups.findOne({
+			_id: data.group_id,
+			members: {
+				$in: [user.username]
+			}
+		});
+		if (group) {
+			return User_messages.find({
+				is_read: false,
+				group_id: data.group_id,
+				type: "invite"
+			}, {
+				fields: {
+					username: 1
+				}
+			});
+		}		
+	}
+});
+
+
 Meteor.publish("users", function() {
 	if (this.userId && Roles.userIsInRole(this.userId, ["admin"])) {
 		return Meteor.users.find({});
@@ -70,9 +129,21 @@ Meteor.publish("current_group", function(data) {
 	if (this.userId) {
 		var user = Meteor.users.findOne({_id: this.userId});
 		if (user){
+
+			var group = Groups.findOne({
+				owner: data.owner,
+				name: data.group_name,
+				locked: false,
+				$or: [
+					{owner: user.username},
+					{members: {$in: [user.username]}}
+				]
+			});
+
 			if (data.is_phone && !data.override) {
 				// console.log("Phone and no override");
-				return Groups.find({
+
+				return [Groups.find({
 					owner: data.owner,
 					name: data.group_name,
 					locked: false,
@@ -84,10 +155,16 @@ Meteor.publish("current_group", function(data) {
 					fields: {
 						logs: 0
 					}
-				});
+				}),
+				Elements.find({
+					group_id: group._id
+				}),
+				Group_scorings.find({
+					_id: group.scoring
+				})];
 			} else if (data.is_phone && data.override) {
 				// console.log("Phone and override");
-				return Groups.find({
+				return [Groups.find({
 					owner: data.owner,
 					name: data.group_name,
 					locked: false,
@@ -99,10 +176,16 @@ Meteor.publish("current_group", function(data) {
 					fields: {
 						logs: 1
 					}
-				});
+				}),
+				Elements.find({
+					group_id: group._id
+				}),
+				Group_scorings.find({
+					_id: group.scoring
+				})];
 			}
 			// console.log("No phone and no override");
-			return Groups.find({
+			return [Groups.find({
 					owner: data.owner,
 					name: data.group_name,
 					locked: false,
@@ -115,7 +198,13 @@ Meteor.publish("current_group", function(data) {
 				// 	name: 1,
 				// 	owner: 1
 				// }
-			});
+			}),
+			Elements.find({
+				group_id: group._id
+			}),
+			Group_scorings.find({
+				_id: group.scoring
+			})];
 		}
 	}
 });
@@ -136,5 +225,33 @@ Meteor.publish("deleted_groups", function() {
 		});
 		// console.log("Del groups: " + groups.fetch().length);
 		return groups;
+	}
+});
+
+
+Meteor.publish("users_online_in_group", function(group_id) {
+
+	if (this.userId) {
+		check(group_id, String);
+		var user = Meteor.users.findOne({_id: this.userId});
+		var group = Groups.findOne({
+			_id: group_id,
+			members: {
+				$in: [user.username]
+			}
+		});
+		if (group) {
+			return Meteor.users.find({
+				"status.online": true,
+				username: {
+					$in: group.members
+				}
+			}, {
+				fields: {
+					username: 1,
+					"status.online": 1
+				}
+			});
+		}
 	}
 });

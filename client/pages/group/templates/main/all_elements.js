@@ -14,9 +14,10 @@ Template.all_elements.rendered = function() {
 }
 
 Template.all_elements.helpers({
-	get_beers_sorted: function(beers) {
-		if (!beers)
-			return;
+	get_beers_sorted: function() {
+		// if (!beers)
+		// 	return;
+		beers = Session.get("beers");
 		// console.log("Sort!");
 		beers.sort(function(a, b) {
 			var data = Session.get("sort_elements");
@@ -76,9 +77,11 @@ Template.all_elements.events({
 			return;
 		}
 
-		for (var i in group.beers) {
-			if (group.beers[i].name === name[0] && group.beers[i].type === name[1]) {
-				Session.set("current_element_in_group", group.beers[i]);
+		var beers = Session.get("beers");
+
+		for (var i in beers) {
+			if (beers[i].name === name[0] && beers[i].type === name[1]) {
+				Session.set("current_element_in_group", beers[i]);
 				Session.set("current_template_group", "element");
 				return;
 			}

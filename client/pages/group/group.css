@@ -23,3 +23,7 @@ a {
 	color: gray;
 	cursor: pointer;
 }
+
+.header-collapse {
+	cursor: pointer;
+}

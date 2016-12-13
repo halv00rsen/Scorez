@@ -6,6 +6,13 @@
 				{{#each members}}
 				<tr>
 					<td>
+						{{#if is_online this}}
+							<i class="fa fa-circle" aria-hidden="true" style="color:green;" title="Online"></i>
+						{{else}}
+							<i class="fa fa-circle-thin" aria-hidden="true" title="Offline"></i>
+						{{/if}}
+					</td>
+					<td>
 						{{this}}
 					</td>
 					<td>
@@ -15,9 +22,31 @@
 					</td>
 				</tr>
 				{{/each}}
+				{{#each get_invited_members}}
+				<tr>
+					<td>
+						<i class="fa fa-circle-thin" aria-hidden="true" title="Offline"></i>
+					</td>
+					<td>
+						<i>{{username}}</i> is invited.
+					</td>
+					<td>
+						<button class="btn btn-xs btn-warning">
+							Remove invitation
+						</button>
+					</td>
+				</tr>
+				{{/each}}
 			{{else}}
 				{{#each members}}
 				<tr>
+					<td>
+						{{#if is_online this}}
+							<i class="fa fa-circle" aria-hidden="true" style="color:green;" title="Online"></i>
+						{{else}}
+							<i class="fa fa-circle-thin" aria-hidden="true" title="Offline"></i>
+						{{/if}}
+					</td>
 					<td>
 						{{this}}
 					</td>

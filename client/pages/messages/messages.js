@@ -2,7 +2,7 @@
 Template.messages.helpers({
 	get_invites: function() {
 		return User_messages.find({
-			type: "invite"
+			// type: "invite"
 		}, {
 			sort: {createdAt: -1}
 		});
@@ -16,11 +16,21 @@ Template.messages.helpers({
 		// }
 		// return invites;
 	},
+
+	get_chat_messages: function() {
+		return Groups.find({
+			"chat_messages": { $exists: true, $ne: null }
+		});
+	},
+
 	get_read_class: function(is_read) {
 		if (!is_read)
 			return "not_read";
 		else
 			return "";
+	},
+	is_invite: function() {
+		return this.type === "invite";
 	}
 });
 
