@@ -66,6 +66,7 @@ Template.element.events({
 	"submit form": function(event, template) {
 		event.preventDefault();
 		var point = Number(event.target.score.value);
+		var comment = event.target.comment.value;
 		if (isNaN(point) || point % 1 !== 0) {
 			Show_message("Please write in an integer.");
 			event.target.score.value = "";
@@ -79,13 +80,15 @@ Template.element.events({
 			element: current_element.name,
 			type: current_element.type,
 			group_id: current_group._id,
-			element_id: current_element._id
+			element_id: current_element._id,
+			comment: comment
 		}, function(error, result) {
 			if (error) 
 				Show_message(error.reason);
 			else 
 				Show_message("The points was given.");
 			event.target.score.value = "";
+			event.target.comment.value = "";
 		});
 
 	}

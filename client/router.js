@@ -64,6 +64,28 @@ Router.route("/new_group", {
 	}
 });
 
+
+Router.route("/group/:username/:group/settings", function() {
+	if (!this.ready()) {
+		return;
+	}
+
+	const username = this.params.username;
+	const group_name = this.params.group;
+
+	const group = Groups.findOne({
+
+	});
+
+	if (!group) {
+		this.render("page_not_found");
+	}
+	else {
+		
+	}
+});
+
+
 Router.route("/group/:username/:group", function() {
 	// console.log(this.ready());
 	if (!this.ready())

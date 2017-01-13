@@ -123,6 +123,13 @@ Schemas.Point = new SimpleSchema({
 		type: String,
 		optional: false,
 		regEx: SimpleSchema.RegEx.Id
+	},
+	comment: {
+		type: String,
+		optional: true,
+		label: "Personal comment from the user",
+		max: 140,
+		min: 1
 	}
 });
 

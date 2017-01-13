@@ -259,7 +259,8 @@ Meteor.methods({
 			element: String,
 			type: String,
 			group_id: String,
-			element_id: String
+			element_id: String,
+			comment: Match.Maybe(String)
 		});
 
 		if (data.point % 1 !== 0 || data.point < 0 || data.point > 100)
@@ -317,15 +318,21 @@ Meteor.methods({
 			}
 		});
 
+		const save_data = {
+			point: data.point,
+			username: Meteor.user().username,
+			_id: Random.id()
+		}
+
+		if (data.comment) {
+			save_data.comment = data.comment;
+		}
+
 		Elements.update({
 			_id: data.element_id
 		}, {
 			$push: {
-				"points": {
-					point: data.point,
-					username: Meteor.user().username,
-					_id: Random.id()
-				}
+				"points": save_data
 			},
 			$set: {
 				score: score.toFixed(2)

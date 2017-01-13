@@ -4,11 +4,13 @@
 		{{#transition in="fadeIn:800" out="fadeOut:500"}}
 		<h4 class="animated out">{{name}} - {{type}}</h4>
 		<a id="back" class="animated out">back</a>
+		{{#if points}}
 		<table class="table animated out">
 			<thead>
 				<tr>
 					<th>Point</th>
 					<th>Username</th>
+					<th>Comment</th>
 					<th></th>
 				</tr>
 			</thead>
@@ -17,6 +19,7 @@
 					<tr class="animated ">
 						<td>{{point}}</td>
 						<td>{{username}}</td>
+						<td>{{comment}}</td>
 						<td>
 							{{#if if_self_element}}
 								<button class="btn btn-xs btn-warning delete_score">Delete</button>
@@ -26,9 +29,18 @@
 				{{/each}}
 			</tbody>
 		</table>
+		{{/if}}
 		{{#if have_not_given}}
+		<br>
 		<form>
-			<input type="number" name="score" autocomplete="off">
+			<div class="form-group">
+				<label for="score">Point</label>
+				<input class="form-control" type="number" name="score" autocomplete="off">
+			</div>
+			<div class="form-group">
+				<label>Comment</label>
+				<textarea class="form-control" name="comment" autocomplete="off" placeholder="Write a comment (optional)"></textarea>
+			</div>
 			<input type="submit" name="submit" value="Give points">
 		</form>
 		{{/if}}
